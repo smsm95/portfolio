@@ -89,7 +89,7 @@ export default function Navbar() {
         </a>
 
         {/* Centered nav */}
-        <nav aria-label="Primary" className="justify-self-center">
+        <nav aria-label="Primary" className="hidden sm:block justify-self-center">
           <ul className="flex items-center gap-1 sm:gap-2 md:gap-6">
             {navKeys.map((key) => {
               const isActive = active === key;
