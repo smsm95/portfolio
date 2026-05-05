@@ -134,6 +134,29 @@ aws cloudfront create-invalidation \
 
 Stash `BUCKET` and `YOUR_DIST_ID` in a `deploy.sh` after the first run.
 
+### Auto-deploy on push (GitHub Actions)
+
+`.github/workflows/deploy.yml` builds and deploys on every push to `main`.
+
+One-time setup on the GitHub repo:
+
+1. **Settings → Secrets and variables → Actions → Secrets**, add:
+   - `AWS_ACCESS_KEY_ID`
+   - `AWS_SECRET_ACCESS_KEY`
+
+2. **Settings → Secrets and variables → Actions → Variables**, add:
+   - `AWS_REGION` (e.g. `us-east-1`)
+   - `S3_BUCKET` (your bucket name)
+   - `CLOUDFRONT_DISTRIBUTION_ID` (the `Exxxxx...` ID)
+
+3. The IAM user behind those keys needs minimum permissions:
+   - `s3:ListBucket`, `s3:GetObject`, `s3:PutObject`, `s3:DeleteObject` on the bucket
+   - `cloudfront:CreateInvalidation` on the distribution
+
+Push to `main`, watch the Actions tab. The workflow runs in ~1–2 min.
+
+> **Security upgrade path**: replace the long-lived access keys with OIDC (no stored credentials). Configure GitHub as an OIDC provider in IAM, create a role with the trust policy scoped to this repo, then swap the workflow's `aws-access-key-id`/`aws-secret-access-key` lines for `role-to-assume:` pointing at the role ARN.
+
 ### Alternative: Amplify Hosting
 
 If you'd rather skip the S3/CloudFront wiring, push to GitHub and connect via **AWS Amplify Hosting → New app → Host web app**. Build settings:

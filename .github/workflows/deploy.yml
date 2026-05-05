@@ -1,0 +1,77 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # allow manual re-deploy from the GitHub UI
+
+# Cancel in-flight runs when a newer commit is pushed.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    # Required for OIDC; harmless when using access keys.
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build static site
+        run: npm run build
+
+      # ----- AWS credentials -----
+      # Default: long-lived access key + secret stored as GitHub secrets.
+      # Recommended upgrade: OIDC (no stored credentials). See README setup notes.
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Sync immutable assets (1y cache)
+        env:
+          BUCKET: ${{ vars.S3_BUCKET }}
+        run: |
+          aws s3 sync ./out/_next "s3://${BUCKET}/_next" \
+            --cache-control "public, max-age=31536000, immutable" \
+            --delete \
+            --only-show-errors
+
+      - name: Sync HTML and images (60s cache)
+        env:
+          BUCKET: ${{ vars.S3_BUCKET }}
+        run: |
+          aws s3 sync ./out "s3://${BUCKET}" \
+            --cache-control "public, max-age=60, must-revalidate" \
+            --exclude "_next/*" \
+            --delete \
+            --only-show-errors
+
+      - name: Invalidate CloudFront
+        env:
+          DIST: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+        run: |
+          INVALIDATION_ID=$(aws cloudfront create-invalidation \
+            --distribution-id "${DIST}" \
+            --paths "/*" \
+            --query 'Invalidation.Id' \
+            --output text)
+          echo "Invalidation: ${INVALIDATION_ID}"
