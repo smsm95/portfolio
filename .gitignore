@@ -1,0 +1,78 @@
+# --- Dependencies ---
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# --- Next.js build output ---
+.next/
+.next-build/
+out/
+build/
+dist/
+
+# --- Generated types ---
+next-env.d.ts
+*.tsbuildinfo
+
+# --- Environment variables (contain secrets, never commit) ---
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# --- Logs ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# --- Test / coverage artifacts ---
+coverage/
+.nyc_output/
+*.lcov
+.cache/
+
+# --- Vercel ---
+.vercel/
+
+# --- IDE / editor ---
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+.history/
+
+# --- OS metadata ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# --- Local secrets / personal scratch ---
+*.pem
+*.key
+.secrets/
+secrets.json
+deploy.config.sh
+
+# --- Misc ---
+.turbo/
+.eslintcache
+.stylelintcache

@@ -1,0 +1,514 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Motion tokens ===== */
+:root {
+  --d-instant: 100ms;
+  --d-quick:   180ms;
+  --d-base:    280ms;
+  --d-slow:    520ms;
+  --d-reveal:  720ms;
+  --d-hero:   1100ms;
+
+  --stagger-tight: 60ms;
+  --stagger-base:  90ms;
+  --stagger-loose: 140ms;
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ===== Tokens (light theme = primary) =====
+ * Color strategy: Restrained
+ *   - Tinted neutrals (warm, slight chroma toward 80°)
+ *   - One accent: emerald (~165°) used sparingly (≤10%)
+ *   - No raw #fff / #000 anywhere
+ */
+:root {
+  /* Surfaces */
+  --bg-base: oklch(0.985 0.005 80);          /* warm paper */
+  --bg-elevated: oklch(0.965 0.005 80);      /* slight lift */
+  --bg-card: oklch(0.99 0.004 80);
+  --bg-inverse: oklch(0.18 0.012 250);
+  --bg-nav: oklch(0.985 0.005 80 / 0.9);
+
+  /* Borders */
+  --border-subtle: oklch(0.18 0.012 250 / 0.08);
+  --border-default: oklch(0.18 0.012 250 / 0.16);
+  --border-strong: oklch(0.18 0.012 250 / 0.32);
+
+  /* Ink */
+  --ink-primary: oklch(0.18 0.012 250);
+  --ink-secondary: oklch(0.40 0.01 250);
+  --ink-muted: oklch(0.58 0.008 250);
+  --ink-inverse: oklch(0.985 0.005 80);
+
+  /* Accent (emerald) */
+  --accent: oklch(0.50 0.13 165);
+  --accent-soft: oklch(0.93 0.04 165);
+  --accent-hover: oklch(0.45 0.13 165);
+
+  /* Shadow scale */
+  --shadow-1: 0 1px 2px oklch(0.18 0.012 250 / 0.05);
+  --shadow-2: 0 4px 12px oklch(0.18 0.012 250 / 0.06);
+  --shadow-3: 0 12px 32px oklch(0.18 0.012 250 / 0.08);
+
+  color-scheme: light;
+}
+
+.dark {
+  --bg-base: oklch(0.16 0.008 250);
+  --bg-elevated: oklch(0.20 0.008 250);
+  --bg-card: oklch(0.22 0.008 250);
+  --bg-inverse: oklch(0.985 0.005 80);
+  --bg-nav: oklch(0.18 0.008 250 / 0.85);
+
+  --border-subtle: oklch(0.985 0.005 80 / 0.06);
+  --border-default: oklch(0.985 0.005 80 / 0.12);
+  --border-strong: oklch(0.985 0.005 80 / 0.24);
+
+  --ink-primary: oklch(0.97 0.004 80);
+  --ink-secondary: oklch(0.72 0.008 250);
+  --ink-muted: oklch(0.55 0.008 250);
+  --ink-inverse: oklch(0.18 0.012 250);
+
+  --accent: oklch(0.74 0.14 165);
+  --accent-soft: oklch(0.32 0.08 165);
+  --accent-hover: oklch(0.80 0.14 165);
+
+  --shadow-1: 0 1px 2px oklch(0.05 0 0 / 0.4);
+  --shadow-2: 0 4px 12px oklch(0.05 0 0 / 0.5);
+  --shadow-3: 0 12px 32px oklch(0.05 0 0 / 0.6);
+
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--ink-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv11', 'ss01', 'ss03';
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/* Editorial display sizes — tight tracking, big jumps */
+.display-1 {
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+.display-2 {
+  font-size: clamp(2.25rem, 5.5vw, 4.25rem);
+  line-height: 1.0;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+}
+.display-3 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -48px;
+  inset-inline-start: 16px;
+  z-index: 100;
+  padding: 8px 14px;
+  background: var(--ink-primary);
+  color: var(--bg-base);
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: top 150ms ease;
+}
+.skip-link:focus { top: 16px; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--ink-muted); }
+
+/* Focus */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+* { -webkit-tap-highlight-color: transparent; }
+
+/* ===== Hero composition ===== */
+.hero-stage {
+  position: relative;
+  width: clamp(15rem, 30vw, 22rem);
+  margin-inline: auto;
+  aspect-ratio: 1 / 1;
+}
+
+/* Photo fills the stage as a perfect circle */
+.hero-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: 9999px;
+  overflow: hidden;
+  background: var(--accent-soft);
+  box-shadow: var(--shadow-2);
+}
+.hero-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: 50% 100%;
+}
+
+/* Smaller name so the hero fits above the fold */
+.hero-name {
+  font-size: clamp(2.25rem, 7.5vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+  text-align: center;
+  color: var(--ink-primary);
+}
+
+.hero-tagline {
+  font-size: clamp(0.75rem, 1.4vw, 0.95rem);
+  letter-spacing: 0.22em;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+/* Vertical social rail (Tailwind controls display via hidden md:flex).
+ * Uses logical inset-inline-start so it sits on the leading edge in RTL. */
+.social-rail {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 35%;
+  flex-direction: column;
+  gap: 1.75rem;
+  align-items: center;
+  z-index: 5;
+}
+.social-rail a {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  color: var(--ink-secondary);
+  transition: color 200ms ease, transform 200ms ease;
+}
+.social-rail a:hover {
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* Clients band */
+.clients-band {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 5vw, 4rem);
+  padding-block: 2.5rem;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-elevated);
+}
+.client-mark {
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink-muted);
+  transition: color 200ms ease;
+  white-space: nowrap;
+}
+.client-mark:hover {
+  color: var(--ink-primary);
+}
+
+/* Email mailto link as editorial display */
+.mailto-headline {
+  display: inline-block;
+  text-decoration: none;
+  color: var(--ink-primary);
+  position: relative;
+  transition: color 200ms ease;
+}
+.mailto-headline::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: -0.05em;
+  height: 0.08em;
+  background: var(--accent);
+  transform-origin: inline-start;
+  transform: scaleX(1);
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.mailto-headline:hover::after,
+.mailto-headline:focus-visible::after {
+  transform: scaleX(0);
+  transform-origin: inline-end;
+}
+.mailto-headline:hover {
+  color: var(--accent);
+}
+
+/* Section wrappers — let content breathe asymmetrically */
+.editorial-section {
+  padding-block: clamp(5rem, 10vw, 9rem);
+}
+
+/* Number tag (for project numbering) */
+.numeral {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* ===== Entrance choreography ===== */
+
+/* Base reveal class for IntersectionObserver-driven scroll reveals */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--d-base) var(--ease-out-quart),
+              transform var(--d-base) var(--ease-out-quart);
+  will-change: opacity, transform;
+}
+.reveal-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Page-load entrance: each named class fades + lifts in with its delay */
+.entrance {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: entrance-rise var(--d-base) var(--ease-out-quart) both;
+}
+@keyframes entrance-rise {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Hero photo entrance: scale + fade */
+.entrance-photo {
+  opacity: 0;
+  transform: scale(0.97);
+  animation: entrance-photo var(--d-reveal) var(--ease-out-expo) 80ms both;
+}
+@keyframes entrance-photo {
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Hero name: per-word mask reveal (LTR: left → right wipe) */
+.entrance-word {
+  display: inline-block;
+  clip-path: inset(0 100% -10% 0);
+  animation: entrance-word var(--d-reveal) var(--ease-out-expo) both;
+  /* Inline style sets the per-word delay */
+}
+@keyframes entrance-word {
+  to { clip-path: inset(0 0 -10% 0); }
+}
+/* RTL: right → left wipe */
+[dir='rtl'] .entrance-word {
+  clip-path: inset(0 0 -10% 100%);
+  animation-name: entrance-word-rtl;
+}
+@keyframes entrance-word-rtl {
+  to { clip-path: inset(0 0 -10% 0); }
+}
+
+/* Tagline */
+.entrance-tagline {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: entrance-rise var(--d-base) var(--ease-out-quart) 600ms both;
+}
+
+/* Social rail items (desktop) — staggered fade */
+.entrance-social-item {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: entrance-rise var(--d-base) var(--ease-out-quart) both;
+}
+
+/* Mobile social row */
+.entrance-social-row {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: entrance-rise var(--d-base) var(--ease-out-quart) 700ms both;
+}
+
+/* Clients band */
+.entrance-clients {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: entrance-rise var(--d-base) var(--ease-out-quart) 800ms both;
+}
+
+/* Skip path: when the URL already had a hash on first paint, the user came
+ * for content. Cancel the long entrance choreography. */
+.hash-load .entrance,
+.hash-load .entrance-photo,
+.hash-load .entrance-word,
+.hash-load .entrance-tagline,
+.hash-load .entrance-social-item,
+.hash-load .entrance-social-row,
+.hash-load .entrance-clients {
+  animation: none;
+  opacity: 1;
+  transform: none;
+  clip-path: none;
+}
+
+/* ===== Nav active-link underline (transform-only) ===== */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0.5rem;
+  bottom: -1px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: inline-start;
+  transition: transform var(--d-base) var(--ease-out-quart);
+}
+.nav-link[aria-current='page']::after {
+  transform: scaleX(1);
+}
+.nav-link:hover::after {
+  transform: scaleX(0.6);
+  transform-origin: inline-start;
+}
+.nav-link[aria-current='page']:hover::after {
+  transform: scaleX(1);
+}
+
+/* ===== Theme-toggle icon rotation ===== */
+.theme-toggle-icon {
+  display: inline-flex;
+  transition: transform var(--d-base) var(--ease-out-quart),
+              opacity var(--d-base) var(--ease-out-quart);
+}
+.theme-toggle-icon[data-spin='true'] {
+  /* Brief 180° turn when the icon flips */
+  animation: theme-icon-spin var(--d-base) var(--ease-out-quart);
+}
+@keyframes theme-icon-spin {
+  from { transform: rotate(0deg); opacity: 0.4; }
+  to   { transform: rotate(180deg); opacity: 1; }
+}
+
+/* ===== Project link hover ===== */
+.project-link-domain {
+  display: inline-block;
+  transition: transform var(--d-quick) var(--ease-out-quart);
+}
+.project-link-arrow {
+  display: inline-block;
+  transition: transform var(--d-quick) var(--ease-out-quart);
+}
+.project-link:hover .project-link-domain {
+  transform: translateX(3px);
+}
+.project-link:hover .project-link-arrow {
+  transform: translate(2px, -2px) rotate(-12deg);
+}
+[dir='rtl'] .project-link:hover .project-link-domain {
+  transform: translateX(-3px);
+}
+[dir='rtl'] .project-link:hover .project-link-arrow {
+  transform: translate(-2px, -2px) rotate(12deg);
+}
+
+/* ===== Hero name word spacing =====
+ * Logical property so RTL gets the gap before the second word (right side). */
+.hero-name .entrance-word + .entrance-word {
+  margin-inline-start: 0.3em;
+}
+[lang='ar'] .hero-name .entrance-word + .entrance-word {
+  margin-inline-start: 0.2em;
+}
+
+/* ===== Arabic typography overrides =====
+ * Latin-tight tracking and uppercase letterspacing crush Arabic ligatures.
+ * Reset to neutral or slightly looser values; bump line-height for marks. */
+[lang='ar'] .hero-name {
+  letter-spacing: 0;
+  line-height: 1.1;
+  font-size: clamp(2.75rem, 9vw, 6.5rem);
+}
+[lang='ar'] .hero-tagline {
+  letter-spacing: 0.04em;
+  text-transform: none;
+  font-size: clamp(0.875rem, 1.6vw, 1.05rem);
+}
+[lang='ar'] .display-1,
+[lang='ar'] .display-2,
+[lang='ar'] .display-3 {
+  letter-spacing: 0;
+  line-height: 1.15;
+}
+/* Section labels use very wide tracking; in Arabic, narrow it considerably */
+[lang='ar'] .tracking-\[0\.18em\],
+[lang='ar'] .tracking-\[0\.22em\] {
+  letter-spacing: 0.06em;
+}
+
+/* Reduced motion: short-circuit everything to instant */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .entrance,
+  .entrance-photo,
+  .entrance-word,
+  .entrance-tagline,
+  .entrance-social-item,
+  .entrance-social-row,
+  .entrance-clients {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+}
