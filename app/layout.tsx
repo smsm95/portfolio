@@ -43,7 +43,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${plexArabic.variable}`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${plexArabic.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <script src="/theme-init.js" />
       </head>
