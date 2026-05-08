@@ -45,6 +45,55 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  /* Follow system theme until the user opts out by toggling. We treat
+   * localStorage.theme being set as the opt-out signal, so the listener
+   * is a no-op once the user has chosen. */
+  useEffect(() => {
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    const apply = () => {
+      try {
+        if (localStorage.getItem('theme')) return; // user has chosen — leave alone
+      } catch {
+        /* private mode or storage blocked — fall through to follow system */
+      }
+      const next: 'dark' | 'light' = mql.matches ? 'dark' : 'light';
+      document.documentElement.classList.toggle('dark', next === 'dark');
+      setTheme(next);
+    };
+    mql.addEventListener('change', apply);
+    return () => mql.removeEventListener('change', apply);
+  }, []);
+
+  /* Keyboard shortcuts — single key, ignored when typing in inputs.
+   *   T  → toggle theme
+   *   L  → toggle locale */
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+      const target = e.target as HTMLElement | null;
+      const tag = target?.tagName;
+      if (
+        target?.isContentEditable ||
+        tag === 'INPUT' ||
+        tag === 'TEXTAREA' ||
+        tag === 'SELECT'
+      ) {
+        return;
+      }
+      const k = e.key.toLowerCase();
+      if (k === 't') {
+        e.preventDefault();
+        toggleTheme();
+      } else if (k === 'l') {
+        e.preventDefault();
+        toggleLocale();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [theme, locale]);
+
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
     setTheme(next);
@@ -118,6 +167,7 @@ export default function Navbar() {
             type="button"
             onClick={toggleLocale}
             aria-label={t.nav.languageToggleAria(locale === 'ar' ? 'en' : 'ar')}
+            aria-keyshortcuts="L"
             className="grid place-items-center min-w-11 h-11 px-2 rounded-full text-sm font-medium text-ink-secondary hover:text-ink-primary cursor-pointer transition-colors numeral"
           >
             {otherLocaleLabel}
@@ -127,6 +177,7 @@ export default function Navbar() {
             onClick={toggleTheme}
             aria-label={t.nav.themeToggleAria(theme === 'dark' ? 'light' : 'dark')}
             aria-pressed={theme === 'dark'}
+            aria-keyshortcuts="T"
             className="grid place-items-center w-11 h-11 rounded-full text-ink-secondary hover:text-ink-primary cursor-pointer transition-colors"
           >
             <span ref={iconRef} className="theme-toggle-icon">
