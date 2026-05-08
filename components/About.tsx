@@ -1,6 +1,7 @@
 'use client';
 
 import Reveal from './Reveal';
+import { SectionHeading } from './SectionHeading';
 import { useLocale } from '@/lib/i18n';
 
 const STACK_DOMAINS: Array<keyof ReturnType<typeof keyMap>> = [
@@ -36,9 +37,12 @@ export default function About() {
             <span className="text-xs uppercase tracking-[0.18em] text-ink-muted numeral">
               {t.about.sectionLabel}
             </span>
-            <h2 id="about-title" className="display-3 text-ink-primary mt-4">
+            <SectionHeading
+              id="about-title"
+              className="display-3 text-ink-primary mt-4"
+            >
               {t.about.sectionHeading}
-            </h2>
+            </SectionHeading>
           </div>
         </Reveal>
 
@@ -67,9 +71,9 @@ export default function About() {
             <span className="text-xs uppercase tracking-[0.18em] text-ink-muted numeral">
               {t.about.stackLabel}
             </span>
-            <h2 className="display-3 text-ink-primary mt-4">
+            <SectionHeading className="display-3 text-ink-primary mt-4">
               {t.about.stackHeading}
-            </h2>
+            </SectionHeading>
           </div>
         </Reveal>
 

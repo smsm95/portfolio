@@ -71,6 +71,14 @@ export type Translation = {
   footer: {
     line: string;
   };
+  notFound: {
+    label: string;
+    heading: string;
+    bodyBeforePath: string;
+    bodyAfterPath: string;
+    takeMeHome: string;
+    emailInstead: string;
+  };
 };
 
 const en: Translation = {
@@ -124,7 +132,7 @@ const en: Translation = {
   },
   projects: {
     sectionLabel: '03 / Selected work',
-    sectionHeading: 'Things I’ve shipped.',
+    sectionHeading: 'Things I’ve *shipped*.',
     intro:
       'A short list. Most of my recent work is internal banking, so what ships publicly is the older social-impact work, still running.',
     visitSite: 'Visit site',
@@ -155,6 +163,15 @@ const en: Translation = {
   },
   footer: {
     line: '© {year} Osama Mirghani · Dubai, UAE',
+  },
+  notFound: {
+    label: '404 / Page not found',
+    heading: 'Looks like that route got *lost in transit*.',
+    bodyBeforePath: 'The page at ',
+    bodyAfterPath:
+      ' doesn’t exist — or used to, and got refactored out. No harm done. Head home, or drop me a note and I’ll point you the right way.',
+    takeMeHome: 'Take me home',
+    emailInstead: 'Email me instead',
   },
 };
 
@@ -241,6 +258,15 @@ const ar: Translation = {
   },
   footer: {
     line: '© {year} اسامة ميرغني · دبي، الإمارات',
+  },
+  notFound: {
+    label: '٤٠٤ / الصفحة غير موجودة',
+    heading: 'يبدو أن هذا الرابط ضاع في الطريق.',
+    bodyBeforePath: 'الصفحة ',
+    bodyAfterPath:
+      ' غير موجودة — أو كانت موجودة ثم أُعيد تنظيمها. لا بأس. عُد إلى الرئيسية، أو راسلني وسأرشدك إلى المكان الصحيح.',
+    takeMeHome: 'العودة إلى الرئيسية',
+    emailInstead: 'راسلني عبر البريد',
   },
 };
 

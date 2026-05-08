@@ -140,10 +140,10 @@ export default function Navbar() {
           <a
             href={social.cv}
             download
-            className="hidden sm:inline-flex items-center gap-2 h-11 ps-5 pe-1.5 rounded-full bg-ink-primary text-ink-inverse text-sm font-medium transition-transform hover:scale-[1.02] active:scale-[0.99]"
+            className="cv-button hidden sm:inline-flex items-center gap-2 h-11 ps-5 pe-1.5 rounded-full bg-ink-primary text-ink-inverse text-sm font-medium transition-transform hover:scale-[1.02] active:scale-[0.99]"
           >
             <span>{t.nav.cv}</span>
-            <span className="grid place-items-center w-8 h-8 rounded-full bg-accent text-ink-primary">
+            <span className="cv-button-chip grid place-items-center w-8 h-8 rounded-full bg-accent text-ink-primary">
               <LuDownload size={14} aria-hidden />
             </span>
           </a>

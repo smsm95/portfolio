@@ -22,6 +22,25 @@ const plexArabic = localFont({
   display: 'swap',
 });
 
+const jetBrainsMono = localFont({
+  src: './fonts/JetBrainsMono-Variable.woff2',
+  variable: '--font-mono',
+  display: 'swap',
+  weight: '400 700',
+});
+
+const instrumentSerif = localFont({
+  src: [
+    {
+      path: './fonts/InstrumentSerif-Italic.woff2',
+      weight: '400',
+      style: 'italic',
+    },
+  ],
+  variable: '--font-serif',
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
   title: 'Osama Mirghani · Software Engineer',
   description:
@@ -51,7 +70,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${plexArabic.variable}`}
+      className={`${inter.variable} ${plexArabic.variable} ${jetBrainsMono.variable} ${instrumentSerif.variable}`}
       suppressHydrationWarning
     >
       <head>
