@@ -43,6 +43,7 @@ export default function Hero() {
 
         {/* Photo */}
         <div className="hero-stage entrance-photo">
+          <span className="hero-ring-spinner" aria-hidden />
           <div className="hero-photo">
             <picture>
               <source srcSet="/avatar.avif" type="image/avif" />

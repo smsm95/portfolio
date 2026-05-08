@@ -986,3 +986,101 @@ main {
     margin-top: 1rem !important;
   }
 }
+
+/* ===== Brand expansion ===== */
+
+/* Hero rotating dashed Spectrum ring — third halo around the avatar.
+ * Sits outside the existing two pulsing rings on .hero-stage::before/::after.
+ * One color (violet) keeps it subtle; one revolution per minute is barely
+ * perceptible at rest but registers when you stare. Defers until after the
+ * 1100ms entrance choreography settles. */
+.hero-ring-spinner {
+  position: absolute;
+  inset: -16%;
+  border-radius: 50%;
+  border: 1px dashed var(--spectrum-violet);
+  opacity: 0.32;
+  pointer-events: none;
+  animation: hero-ring-spin 60s linear 1100ms infinite;
+}
+@keyframes hero-ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Section dividers — 1px Spectrum gradient line that sweeps in via
+ * scroll-driven view() timeline. Older browsers see the static line. */
+.section-divider-wrap {
+  display: flex;
+  justify-content: center;
+  padding-inline: 24px;
+}
+.section-divider {
+  display: block;
+  width: 100%;
+  max-width: 64rem;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--spectrum-emerald) 18%,
+    var(--spectrum-cobalt) 35%,
+    var(--spectrum-citrus) 50%,
+    var(--spectrum-magenta) 65%,
+    var(--spectrum-violet) 82%,
+    transparent 100%
+  );
+  opacity: 0.45;
+  transform-origin: center;
+}
+@supports (animation-timeline: view()) {
+  .section-divider {
+    animation: section-divider-sweep linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 80%;
+  }
+  @keyframes section-divider-sweep {
+    from { transform: scaleX(0); opacity: 0; }
+    to   { transform: scaleX(1); opacity: 0.45; }
+  }
+}
+
+/* Cursor-follow accent dot — desktop only, driven by rAF in
+ * <CursorAccent>. Starts hidden, fades in once the pointer moves. */
+.cursor-accent {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  background: var(--spectrum-violet);
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0;
+  mix-blend-mode: multiply;
+  transition: opacity 200ms var(--ease-out-quart);
+  will-change: transform;
+}
+.dark .cursor-accent {
+  mix-blend-mode: screen;
+}
+
+/* Reduced-motion + coarse-pointer cancel for everything in this block */
+@media (prefers-reduced-motion: reduce) {
+  .hero-ring-spinner {
+    animation: none;
+  }
+  .section-divider {
+    animation: none;
+    transform: none;
+    opacity: 0.45;
+  }
+  .cursor-accent {
+    display: none !important;
+  }
+}
+@media (pointer: coarse) {
+  .cursor-accent {
+    display: none !important;
+  }
+}
