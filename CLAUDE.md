@@ -46,14 +46,46 @@ through the design system. Trust it over memory or training.
 
 ## Workflow
 
-- Push to `main` → GitHub Actions OIDC role assumes
+**Every change goes through a branch + PR, never directly to `main`.**
+This is non-negotiable — the user set this rule explicitly. The exact
+sequence:
+
+```bash
+# 1. Sync, branch
+git switch main && git pull --rebase
+git switch -c <type>/<short-slug>     # e.g. fix/footer-contrast
+
+# 2. Edit, atomic Conventional Commits
+git add … && git commit -m "..."
+
+# 3. Push, PR, rebase merge, delete branch
+git push -u origin <branch>
+gh pr create --base main --head <branch> --title "<commit subject>" --body "..."
+gh pr merge <PR#> --rebase --delete-branch --repo smsm95/portfolio
+
+# 4. Sync local main, watch deploy
+git switch main && git pull --rebase && git fetch --prune
+gh run watch $(gh run list --branch main --limit 1 --json databaseId --jq '.[0].databaseId') --exit-status
+```
+
+Branch naming: `<type>/<slug>` matching the commit prefix — `fix/…`,
+`feat/…`, `chore/…`, `ci/…`, `docs/…`. The `main` branch ruleset
+enforces `non_fast_forward`, `deletion`, and `required_linear_history`,
+so merge-commit strategies will be rejected; rebase merge is the only
+option.
+
+The deploy itself:
+
+- Push to `main` (via merged PR) → GitHub Actions OIDC role assumes
   `github-actions-portfolio-deployer`, builds, syncs to S3, invalidates
   CloudFront. Single workflow, no manual steps.
 - Local one-off deploys: `./deploy.sh` uses the `portfolio-deployer` AWS
-  profile (least-priv IAM user).
-- **Atomic Conventional Commits.** Lowercase prefixes (`fix:`, `feat:`,
-  `chore:`, `ci:`). Body explains *why*, not *what*. Always include the
-  `Co-Authored-By: Claude Opus 4.7 <noreply@anthropic.com>` trailer.
+  profile (least-priv IAM user). Use only when the CI flow is broken.
+
+**Atomic Conventional Commits.** Lowercase prefixes (`fix:`, `feat:`,
+`chore:`, `ci:`, `docs:`). Body explains *why*, not *what*. Always
+include the `Co-Authored-By: Claude Opus 4.7 <noreply@anthropic.com>`
+trailer.
 
 ## Project layout
 

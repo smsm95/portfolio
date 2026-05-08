@@ -108,10 +108,25 @@ for examples and the bilingual rules.
    confirm every new animation cancels.
 5. **Don't commit yet.** The user reviews UI changes in dev before
    committing. Show them the dev URL and pause.
-6. When approved, commit as **atomic Conventional Commits** with
-   lowercase prefixes (`feat:`, `fix:`, `chore:`). Include the
+6. When approved, ship via the branch + PR flow — **never push directly
+   to `main`**. Sequence (also documented in [`CLAUDE.md`](../../../CLAUDE.md)):
+
+   ```bash
+   git switch main && git pull --rebase
+   git switch -c <type>/<short-slug>
+   git commit -m "<atomic Conventional Commit>"
+   git push -u origin <branch>
+   gh pr create --base main --head <branch> --title "<subject>" --body "..."
+   gh pr merge <PR#> --rebase --delete-branch --repo smsm95/portfolio
+   git switch main && git pull --rebase
+   ```
+
+   Use atomic Conventional Commits with lowercase prefixes (`feat:`,
+   `fix:`, `chore:`). Include the
    `Co-Authored-By: Claude Opus 4.7 <noreply@anthropic.com>` trailer.
-7. Push to `main` triggers OIDC deploy automatically.
+
+7. The merge to `main` triggers the OIDC deploy automatically. Watch
+   it with `gh run watch …`.
 
 ## When to skip this skill
 
