@@ -1,5 +1,6 @@
 'use client';
 
+import { Fragment } from 'react';
 import Reveal from './Reveal';
 import { SectionHeading } from './SectionHeading';
 import { useLocale } from '@/lib/i18n';
@@ -77,14 +78,14 @@ export default function About() {
           </div>
         </Reveal>
 
-        <dl className="divide-y divide-border-subtle">
-          {STACK_DOMAINS.map((domainKey, i) => (
-            <Reveal key={domainKey} delay={120 + i * 80}>
-              <div className="grid grid-cols-[7rem_1fr] sm:grid-cols-[10rem_1fr] gap-4 py-5">
-                <dt className="text-sm sm:text-base text-ink-muted pt-0.5">
+        <Reveal delay={120}>
+          <dl className="grid grid-cols-[7rem_1fr] sm:grid-cols-[10rem_1fr] gap-x-4">
+            {STACK_DOMAINS.map((domainKey) => (
+              <Fragment key={domainKey}>
+                <dt className="text-sm sm:text-base text-ink-muted pt-[1.4rem] pb-5 border-t border-border-subtle first-of-type:border-t-0 sm:first-of-type:border-t-0">
                   {t.about.domains[domainKey]}
                 </dt>
-                <dd className="text-base sm:text-lg text-ink-primary leading-relaxed">
+                <dd className="text-base sm:text-lg text-ink-primary leading-relaxed pt-5 pb-5 border-t border-border-subtle first-of-type:border-t-0 m-0">
                   {STACK_ITEMS[domainKey].map((item, j) => (
                     <span key={item}>
                       {item}
@@ -94,10 +95,10 @@ export default function About() {
                     </span>
                   ))}
                 </dd>
-              </div>
-            </Reveal>
-          ))}
-        </dl>
+              </Fragment>
+            ))}
+          </dl>
+        </Reveal>
       </div>
     </section>
   );
