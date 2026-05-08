@@ -1,0 +1,270 @@
+/* ============================================================
+   OM/DS — Canonical token reference
+   ------------------------------------------------------------
+   This is the SOURCE OF TRUTH for design tokens. Runtime tokens
+   live in `app/globals.css`; if you change a value here, mirror
+   it there in the same PR (and vice versa).
+
+   @font-face declarations are NOT included — fonts are loaded at
+   runtime via `next/font/local` in `app/layout.tsx` and exposed
+   on the html element as CSS variables (--font-inter, --font-mono,
+   --font-serif, --font-arabic). Refer to those variables here.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   Color tokens
+   Strategy: warm paper neutrals + a 5-stop "Spectrum" of accents
+   that the system uses INTENTIONALLY for energy & creative coding.
+   Emerald is still the primary semantic accent.
+   ------------------------------------------------------------ */
+:root {
+  /* Surfaces (warm paper) */
+  --bg-base:      oklch(0.985 0.005 80);   /* warm paper */
+  --bg-elevated:  oklch(0.965 0.005 80);
+  --bg-card:      oklch(0.99  0.004 80);
+  --bg-inverse:   oklch(0.18  0.012 250);  /* deep night */
+  --bg-nav:       oklch(0.985 0.005 80 / 0.9);
+  --bg-tint-emerald: oklch(0.96 0.04 165);
+  --bg-tint-cobalt:  oklch(0.96 0.04 250);
+  --bg-tint-citrus:  oklch(0.96 0.06 95);
+  --bg-tint-magenta: oklch(0.96 0.04 350);
+  --bg-tint-violet:  oklch(0.96 0.04 290);
+
+  /* Borders */
+  --border-subtle:  oklch(0.18 0.012 250 / 0.08);
+  --border-default: oklch(0.18 0.012 250 / 0.16);
+  --border-strong:  oklch(0.18 0.012 250 / 0.32);
+
+  /* Ink */
+  --ink-primary:   oklch(0.18 0.012 250);
+  --ink-secondary: oklch(0.40 0.01  250);
+  --ink-muted:     oklch(0.58 0.008 250);
+  --ink-inverse:   oklch(0.985 0.005 80);
+
+  /* Spectrum — the 5-color set used for animations, badges,
+     project tags, illustrative cards. Use ONE per surface. */
+  --spectrum-emerald: oklch(0.62 0.16 162);   /* primary accent */
+  --spectrum-cobalt:  oklch(0.55 0.18 250);
+  --spectrum-citrus:  oklch(0.85 0.18  95);
+  --spectrum-magenta: oklch(0.62 0.22 350);
+  --spectrum-violet:  oklch(0.55 0.22 290);
+
+  /* Soft + hover variants of spectrum */
+  --spectrum-emerald-soft: oklch(0.93 0.05 162);
+  --spectrum-cobalt-soft:  oklch(0.93 0.05 250);
+  --spectrum-citrus-soft:  oklch(0.95 0.10  95);
+  --spectrum-magenta-soft: oklch(0.93 0.06 350);
+  --spectrum-violet-soft:  oklch(0.93 0.06 290);
+
+  /* Semantic accent (emerald is the default) */
+  --accent:        var(--spectrum-emerald);
+  --accent-soft:   var(--spectrum-emerald-soft);
+  --accent-hover:  oklch(0.55 0.16 162);
+
+  /* Status */
+  --status-success: oklch(0.62 0.16 162);
+  --status-warning: oklch(0.78 0.16  75);
+  --status-danger:  oklch(0.58 0.20  25);
+  --status-info:    oklch(0.58 0.16 240);
+
+  /* Shadow scale (cool, low-saturation) */
+  --shadow-1: 0 1px  2px  oklch(0.18 0.012 250 / 0.05);
+  --shadow-2: 0 4px  12px oklch(0.18 0.012 250 / 0.06);
+  --shadow-3: 0 12px 32px oklch(0.18 0.012 250 / 0.08);
+  --shadow-4: 0 24px 60px oklch(0.18 0.012 250 / 0.12);
+  /* Colored shadows for hero / cta surfaces */
+  --shadow-emerald: 0 12px 32px oklch(0.62 0.16 162 / 0.25);
+  --shadow-cobalt:  0 12px 32px oklch(0.55 0.18 250 / 0.25);
+
+  color-scheme: light;
+}
+
+.dark {
+  --bg-base:      oklch(0.16 0.008 250);
+  --bg-elevated:  oklch(0.20 0.008 250);
+  --bg-card:      oklch(0.22 0.008 250);
+  --bg-inverse:   oklch(0.985 0.005 80);
+  --bg-nav:       oklch(0.18 0.008 250 / 0.85);
+  --bg-tint-emerald: oklch(0.28 0.06 162);
+  --bg-tint-cobalt:  oklch(0.28 0.07 250);
+  --bg-tint-citrus:  oklch(0.32 0.10 95);
+  --bg-tint-magenta: oklch(0.28 0.08 350);
+  --bg-tint-violet:  oklch(0.28 0.08 290);
+
+  --border-subtle:  oklch(0.985 0.005 80 / 0.06);
+  --border-default: oklch(0.985 0.005 80 / 0.12);
+  --border-strong:  oklch(0.985 0.005 80 / 0.24);
+
+  --ink-primary:   oklch(0.97 0.004 80);
+  --ink-secondary: oklch(0.72 0.008 250);
+  --ink-muted:     oklch(0.55 0.008 250);
+  --ink-inverse:   oklch(0.18 0.012 250);
+
+  --spectrum-emerald: oklch(0.74 0.14 162);
+  --spectrum-cobalt:  oklch(0.72 0.16 250);
+  --spectrum-citrus:  oklch(0.88 0.18  95);
+  --spectrum-magenta: oklch(0.72 0.20 350);
+  --spectrum-violet:  oklch(0.70 0.20 290);
+
+  --spectrum-emerald-soft: oklch(0.32 0.08 162);
+  --spectrum-cobalt-soft:  oklch(0.32 0.08 250);
+  --spectrum-citrus-soft:  oklch(0.32 0.10 95);
+  --spectrum-magenta-soft: oklch(0.32 0.10 350);
+  --spectrum-violet-soft:  oklch(0.32 0.10 290);
+
+  --accent: var(--spectrum-emerald);
+  --accent-soft: var(--spectrum-emerald-soft);
+  --accent-hover: oklch(0.80 0.14 162);
+
+  --shadow-1: 0 1px 2px   oklch(0.05 0 0 / 0.4);
+  --shadow-2: 0 4px 12px  oklch(0.05 0 0 / 0.5);
+  --shadow-3: 0 12px 32px oklch(0.05 0 0 / 0.6);
+  --shadow-4: 0 24px 60px oklch(0.05 0 0 / 0.75);
+  --shadow-emerald: 0 12px 32px oklch(0.74 0.14 162 / 0.30);
+  --shadow-cobalt:  0 12px 32px oklch(0.72 0.16 250 / 0.30);
+
+  color-scheme: dark;
+}
+
+/* ------------------------------------------------------------
+   Type system
+   ------------------------------------------------------------ */
+:root {
+  /* Families */
+  --font-sans:    'Inter', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui, sans-serif;
+  --font-arabic:  'IBM Plex Sans Arabic', 'Inter', sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-serif:   'Instrument Serif', ui-serif, Georgia, serif; /* used SPARINGLY for italic punctuation */
+
+  /* Fluid scale (clamp) — editorial display jumps */
+  --type-display-1: clamp(3rem,    8vw,   6.5rem);   /* hero name */
+  --type-display-2: clamp(2.25rem, 5.5vw, 4.25rem);  /* big section */
+  --type-display-3: clamp(1.5rem,  3vw,   2rem);     /* section */
+  --type-h1:        clamp(1.875rem, 3vw, 2.5rem);
+  --type-h2:        clamp(1.5rem,  2.4vw, 2rem);
+  --type-h3:        1.25rem;
+  --type-body-lg:   1.125rem;
+  --type-body:      1rem;
+  --type-body-sm:   0.875rem;
+  --type-caption:   0.75rem;
+  --type-overline:  0.6875rem;
+
+  /* Tracking */
+  --track-tight:   -0.04em;
+  --track-snug:    -0.02em;
+  --track-normal:   0;
+  --track-wide:     0.06em;
+  --track-overline: 0.22em;
+
+  /* Leading */
+  --lead-display: 0.95;
+  --lead-tight:   1.1;
+  --lead-snug:    1.3;
+  --lead-body:    1.6;
+
+  /* Weights */
+  --w-light:   300;
+  --w-regular: 400;
+  --w-medium:  500;
+  --w-semi:    600;
+  --w-bold:    700;
+}
+
+/* ------------------------------------------------------------
+   Motion tokens (carried over from globals.css, expanded)
+   ------------------------------------------------------------ */
+:root {
+  --d-instant: 100ms;
+  --d-quick:   180ms;
+  --d-base:    280ms;
+  --d-slow:    520ms;
+  --d-reveal:  720ms;
+  --d-hero:   1100ms;
+
+  --stagger-tight: 60ms;
+  --stagger-base:  90ms;
+  --stagger-loose: 140ms;
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);   /* used for stickers/badges */
+  --ease-overshoot: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+/* ------------------------------------------------------------
+   Spacing + Radius + Layout
+   ------------------------------------------------------------ */
+:root {
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.5rem;
+  --space-6:  2rem;
+  --space-7:  3rem;
+  --space-8:  4rem;
+  --space-9:  6rem;
+  --space-10: 9rem;
+
+  --radius-xs:  4px;
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  16px;
+  --radius-xl:  24px;
+  --radius-pill: 9999px;
+
+  --border-w-1: 1px;
+  --border-w-2: 2px;
+
+  --container-narrow: 36rem;
+  --container-prose:  46rem;
+  --container-wide:   72rem;
+}
+
+/* ------------------------------------------------------------
+   Semantic class roles — readable defaults for any HTML doc
+   ------------------------------------------------------------ */
+html, body {
+  background: var(--bg-base);
+  color: var(--ink-primary);
+  font-family: var(--font-sans);
+  font-feature-settings: 'cv11', 'ss01', 'ss03';
+  -webkit-font-smoothing: antialiased;
+}
+
+[lang='ar'] {
+  font-family: var(--font-arabic);
+}
+
+.t-display-1 { font-size: var(--type-display-1); line-height: var(--lead-display); letter-spacing: var(--track-tight); font-weight: var(--w-semi); }
+.t-display-2 { font-size: var(--type-display-2); line-height: var(--lead-display); letter-spacing: var(--track-tight); font-weight: var(--w-semi); }
+.t-display-3 { font-size: var(--type-display-3); line-height: var(--lead-tight);   letter-spacing: var(--track-snug);  font-weight: var(--w-semi); }
+.t-h1 { font-size: var(--type-h1); line-height: var(--lead-tight); letter-spacing: var(--track-snug); font-weight: var(--w-semi); }
+.t-h2 { font-size: var(--type-h2); line-height: var(--lead-tight); letter-spacing: var(--track-snug); font-weight: var(--w-semi); }
+.t-h3 { font-size: var(--type-h3); line-height: var(--lead-snug);  letter-spacing: var(--track-normal); font-weight: var(--w-semi); }
+.t-body-lg { font-size: var(--type-body-lg); line-height: var(--lead-body); }
+.t-body    { font-size: var(--type-body);    line-height: var(--lead-body); }
+.t-body-sm { font-size: var(--type-body-sm); line-height: var(--lead-body); color: var(--ink-secondary); }
+.t-caption { font-size: var(--type-caption); line-height: var(--lead-snug); color: var(--ink-muted); }
+.t-overline {
+  font-size: var(--type-overline);
+  letter-spacing: var(--track-overline);
+  text-transform: uppercase;
+  font-weight: var(--w-medium);
+  color: var(--ink-muted);
+}
+.t-mono { font-family: var(--font-mono); font-size: var(--type-body-sm); }
+.t-serif-italic { font-family: var(--font-serif); font-style: italic; }
+
+/* Numerals */
+.numeral { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum'; }
+
+/* Spectrum text helpers */
+.fg-emerald { color: var(--spectrum-emerald); }
+.fg-cobalt  { color: var(--spectrum-cobalt); }
+.fg-citrus  { color: var(--spectrum-citrus); }
+.fg-magenta { color: var(--spectrum-magenta); }
+.fg-violet  { color: var(--spectrum-violet); }
+.fg-muted   { color: var(--ink-muted); }
+.fg-secondary { color: var(--ink-secondary); }
