@@ -55,7 +55,8 @@ coverage/
 *~
 .history/
 
-# --- Claude Code (project settings + skills are tracked; local overrides are not) ---
+# --- Claude Code (skills are tracked; settings stay local) ---
+.claude/settings.json
 .claude/settings.local.json
 
 # --- OS metadata ---
