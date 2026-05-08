@@ -42,6 +42,7 @@ const instrumentSerif = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://osamamirghani.com'),
   title: 'Osama Mirghani · Software Engineer',
   description:
     'Full-stack software engineer with 8+ years of experience building secure, scalable web applications. Currently at Emirates NBD.',
@@ -50,6 +51,7 @@ export const metadata: Metadata = {
     description:
       'Full-stack software engineer with 8+ years of experience building secure, scalable web applications.',
     type: 'website',
+    url: 'https://osamamirghani.com',
   },
 };
 
