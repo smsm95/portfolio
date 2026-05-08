@@ -112,7 +112,7 @@ const en: Translation = {
   },
   about: {
     sectionLabel: '01 / About',
-    sectionHeading: 'What I work on.',
+    sectionHeading: 'What I *work* on.',
     paragraph1:
       'I build secure, scalable products for finance. At Emirates NBD that means digital business banking, instant lending integrations, and partner APIs that move real money. The work is end-to-end: architecture, frontend, backend, infrastructure.',
     freelanceLead: 'I’m currently ',
