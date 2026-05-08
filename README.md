@@ -1,20 +1,28 @@
-# Portfolio — Osama Mirghani
+# osamamirghani.com
 
-Personal portfolio site. Single-page editorial layout, bilingual (English / Arabic with full RTL), light + dark themes, motion-driven hero. Static-exported Next.js, deploys to AWS S3 + CloudFront.
+> Source for **[osamamirghani.com](https://osamamirghani.com)** — a bilingual editorial portfolio for a software engineer in Dubai.
 
-Live: _coming soon_
+Single-page Next.js static export. English and Arabic with full RTL parity, light and dark themes, motion-as-brand. Deploys to AWS S3 + CloudFront on every push to `main`.
 
 ## Stack
 
 | | |
 | --- | --- |
-| **Framework** | Next.js 16 (App Router, static export via `output: 'export'`) |
-| **Runtime** | React 19, TypeScript 5 |
-| **Styling** | Tailwind CSS 3, CSS variables for design tokens (OKLCH) |
-| **Fonts** | `Inter` (Latin) + `IBM Plex Sans Arabic` via `next/font/google` |
-| **Icons** | `react-icons` (Simple Icons + Lucide) |
-| **i18n** | Custom React Context + dictionary, no library |
-| **Hosting** | AWS S3 (static) behind CloudFront, Route 53 DNS |
+| **Framework** | Next.js 16 App Router, static export (`output: 'export'`) |
+| **Runtime** | React 19 · TypeScript 5 |
+| **Styling** | Tailwind CSS 3 + OKLCH design tokens via CSS variables |
+| **Fonts** | Inter Variable, IBM Plex Sans Arabic, JetBrains Mono Variable, Instrument Serif Italic — **all self-hosted** via `next/font/local` |
+| **Icons** | `react-icons` (Lucide UI + Simple Icons brand marks) |
+| **i18n** | Custom React Context + typed dictionaries (no library) |
+| **Hosting** | AWS S3 (private origin) → CloudFront (TLSv1.2_2021, HTTP→HTTPS) |
+| **DNS** | Route 53 — A/AAAA aliases, CAA, SPF `-all`, DMARC `p=reject` |
+| **CI/CD** | GitHub Actions, OIDC-federated IAM role (no long-lived AWS keys) |
+
+## Design system
+
+The site is built on **OM/DS** — its own design system documented in [`docs/design-system/`](docs/design-system/). 5-stop Spectrum palette (emerald, cobalt, citrus, magenta, violet) layered on warm-paper neutrals; mono voice for section labels and tags; a single-word Instrument Serif italic flourish per display heading. All tokens in OKLCH, all directional CSS in logical properties for RTL parity.
+
+Read [`docs/design-system/README.md`](docs/design-system/README.md) for the full visual foundations and the "when you add a component" checklist.
 
 ## Local development
 
@@ -24,55 +32,51 @@ npm run dev          # http://localhost:3000
 npm run build        # static export → ./out
 ```
 
-The dev server runs Turbopack. The build output is fully static — no runtime, no server needed.
+The dev server runs Turbopack. Build output is fully static — no runtime, no server.
 
-## Project structure
+Want to deploy a copy from your laptop without GitHub Actions? Copy `deploy.config.example.sh` to `deploy.config.sh`, fill in your `BUCKET` + `DISTRIBUTION_ID`, then `./deploy.sh`.
+
+## Project layout
 
 ```
 app/
-  layout.tsx        # Root layout, fonts, LocaleProvider, metadata
-  page.tsx          # Composes Hero / About / Projects / Contact / Footer
-  globals.css       # Tokens, motion classes, RTL overrides
-  icon.png          # Favicon (auto-served at /icon.png)
-  apple-icon.png    # iOS touch icon
+├── layout.tsx          font registration, LocaleProvider, metadata
+├── page.tsx            composes Hero/About/Projects/Contact/Footer
+├── not-found.tsx       /404.html — Lost in transit
+├── globals.css         runtime tokens + motion + reduced-motion branch
+└── fonts/              all four families, woff2
 
 components/
-  Navbar.tsx        # Fixed top nav, scroll-spy, theme + locale toggles
-  Hero.tsx          # Photo + name + tagline + clients band
-  About.tsx         # Section copy + tech stack listing
-  Projects.tsx      # Numbered editorial list of public work
-  Contact.tsx       # Email-led contact section
-  Footer.tsx        # Single-line colophon
-  Reveal.tsx        # IntersectionObserver wrapper for scroll reveals
+├── Hero, About, Projects, Contact, Footer, Navbar
+├── SectionHeading.tsx  parses *italic* markers + accent period
+└── Reveal.tsx          IntersectionObserver scroll-reveal wrapper
 
 lib/
-  data.ts           # Project list, social URLs, nav keys
-  i18n.tsx          # LocaleProvider, useLocale hook
-  translations.ts   # en + ar dictionaries (typed)
+├── data.ts             projects, social URLs, nav keys
+├── translations.ts     en + ar dictionaries (typed)
+└── i18n.tsx            LocaleProvider + useLocale hook
 
-public/
-  avatar.{avif,webp,png}  # Photo (3 formats via <picture>)
-  resume.pdf              # Downloaded by the "Download CV" button
-  theme-init.js           # Pre-paint script: theme + locale + hash detection
-  icon.png / apple-icon.png  # Auto-handled by Next.js
+docs/design-system/     visual foundations, tokens, voice + tone
+.claude/skills/         om-ds-ui — Claude Code skill for UI work
+
+.github/workflows/
+└── deploy.yml          OIDC → build → S3 sync → CloudFront invalidate
 ```
 
 ## Customizing content
 
-Most edits happen in three files:
+Three files cover most edits:
 
 | What | Where |
 | --- | --- |
-| Project list, social URLs | `lib/data.ts` |
+| Project list, social URLs, nav | `lib/data.ts` |
 | All visible text (en + ar) | `lib/translations.ts` |
-| Avatar photo | Replace `public/avatar.png` and regenerate `.webp` / `.avif` (see below) |
-| Resume | Replace `public/resume.pdf` |
+| Avatar | replace `public/avatar.png`; regenerate `.webp` and `.avif` |
+| Resume PDF | `public/resume.pdf` |
 | Page metadata (title, OG) | `app/layout.tsx` |
-| Design tokens (color, motion, spacing) | `app/globals.css` |
+| Design tokens | `app/globals.css` (mirror with `docs/design-system/tokens.css`) |
 
 ### Regenerating image variants
-
-The hero photo ships in 3 formats so the browser picks the smallest. Recreate them with:
 
 ```bash
 cd public
@@ -80,112 +84,53 @@ cwebp -q 82 -m 6 avatar.png -o avatar.webp
 avifenc --min 32 --max 40 -j 4 avatar.png avatar.avif
 ```
 
-Both `cwebp` and `avifenc` are available via Homebrew (`brew install webp libavif`).
+`brew install webp libavif` for the binaries.
 
-## Deploy to AWS (S3 + CloudFront + Route 53)
+## Deployment
 
-For your `yourdomain.com` already managed in Route 53. Total cost: ~$1–3/month.
+Push to `main`. The workflow at [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) runs in ~40 s:
 
-### One-time setup
+1. Checkout, install, build (`output: 'export'` → `./out`)
+2. `aws-actions/configure-aws-credentials@v4` assumes an IAM role via OIDC (no stored secrets)
+3. Sync `_next/*` with 1-year immutable cache, then HTML/images with 60 s cache
+4. Invalidate CloudFront `/*`
 
-```bash
-# 1. Build
-npm run build      # outputs ./out
+The `main` branch is protected: no force-push, no deletion, linear history required.
 
-# 2. Create S3 bucket (private; CloudFront reads via OAC)
-BUCKET=portfolio-om-yourdomain-com
-REGION=us-east-1   # required for CloudFront ACM cert
+### Required GitHub repo variables
 
-aws s3api create-bucket --bucket "$BUCKET" --region "$REGION"
-aws s3api put-public-access-block --bucket "$BUCKET" \
-  --public-access-block-configuration BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true
-```
+| Variable | Example |
+| --- | --- |
+| `AWS_REGION` | `us-east-1` |
+| `AWS_ROLE_ARN` | `arn:aws:iam::ACCOUNT:role/github-actions-portfolio-deployer` |
+| `S3_BUCKET` | your bucket name |
+| `CLOUDFRONT_DISTRIBUTION_ID` | `Exxxxxxxxx` |
 
-Then in the AWS console:
+The IAM role's trust policy is scoped to `repo:owner/repo:ref:refs/heads/main` so only this repo's main branch can assume it. The role's permission policy grants only `s3:ListBucket`, `s3:Put/Get/DeleteObject` on the bucket, and `cloudfront:CreateInvalidation` on the distribution.
 
-1. **ACM** (us-east-1): request a public cert for `yourdomain.com` and `www.yourdomain.com`, validate via Route 53. Wait for **Issued**.
-2. **CloudFront**: create distribution.
-   - Origin: select your S3 bucket. Origin access: **OAC** (auto-generated).
-   - Viewer protocol: **Redirect HTTP to HTTPS**.
-   - Default root object: `index.html`.
-   - Alternate domain names: `yourdomain.com`, `www.yourdomain.com`.
-   - SSL: pick the ACM cert.
-   - Custom error responses: map both `403 → /404.html (404, TTL 10)` and `404 → /404.html (404, TTL 10)`.
-3. Apply the bucket policy CloudFront generates (it pins access to your distribution ARN).
-4. **Route 53**: create A-Alias records for the apex and www, pointing at the CloudFront distribution.
+## Security posture
 
-### Recurring deploys
-
-```bash
-npm run build
-
-# Long-cache immutable Next.js assets
-aws s3 sync ./out/_next "s3://$BUCKET/_next" \
-  --cache-control "public, max-age=31536000, immutable" --delete
-
-# Short-cache HTML / images so updates show within a minute
-aws s3 sync ./out "s3://$BUCKET" \
-  --cache-control "public, max-age=60, must-revalidate" \
-  --exclude "_next/*" --delete
-
-aws cloudfront create-invalidation \
-  --distribution-id YOUR_DIST_ID --paths "/*"
-```
-
-Stash `BUCKET` and `YOUR_DIST_ID` in a `deploy.sh` after the first run.
-
-### Auto-deploy on push (GitHub Actions)
-
-`.github/workflows/deploy.yml` builds and deploys on every push to `main`.
-
-One-time setup on the GitHub repo:
-
-1. **Settings → Secrets and variables → Actions → Secrets**, add:
-   - `AWS_ACCESS_KEY_ID`
-   - `AWS_SECRET_ACCESS_KEY`
-
-2. **Settings → Secrets and variables → Actions → Variables**, add:
-   - `AWS_REGION` (e.g. `us-east-1`)
-   - `S3_BUCKET` (your bucket name)
-   - `CLOUDFRONT_DISTRIBUTION_ID` (the `Exxxxx...` ID)
-
-3. The IAM user behind those keys needs minimum permissions:
-   - `s3:ListBucket`, `s3:GetObject`, `s3:PutObject`, `s3:DeleteObject` on the bucket
-   - `cloudfront:CreateInvalidation` on the distribution
-
-Push to `main`, watch the Actions tab. The workflow runs in ~1–2 min.
-
-> **Security upgrade path**: replace the long-lived access keys with OIDC (no stored credentials). Configure GitHub as an OIDC provider in IAM, create a role with the trust policy scoped to this repo, then swap the workflow's `aws-access-key-id`/`aws-secret-access-key` lines for `role-to-assume:` pointing at the role ARN.
-
-### Alternative: Amplify Hosting
-
-If you'd rather skip the S3/CloudFront wiring, push to GitHub and connect via **AWS Amplify Hosting → New app → Host web app**. Build settings:
-
-```yaml
-version: 1
-frontend:
-  phases:
-    preBuild: { commands: [npm ci] }
-    build:    { commands: [npm run build] }
-  artifacts:
-    baseDirectory: out
-    files: ['**/*']
-```
-
-Tradeoff: ~$0.01/build minute and $0.15/GB served vs near-free with S3+CloudFront, but zero infra setup.
+- Private S3 origin behind CloudFront OAC; bucket policy scoped to the distribution ARN
+- S3 default encryption (AES-256), versioning, BucketOwnerEnforced (no ACLs)
+- CloudFront Response Headers Policy: HSTS (2y, preload, includeSubDomains), CSP, X-Frame DENY, X-Content-Type nosniff, Referrer-Policy strict-origin-when-cross-origin, Permissions-Policy, COOP same-origin
+- TLSv1.2_2021 minimum, HTTP→HTTPS redirect
+- Route 53: CAA (Amazon CAs only), SPF `-all`, DMARC `p=reject` strict alignment, wildcard DKIM null
+- IAM Access Analyzer enabled; AWS Budget with email alerts at 50/80/100%
+- AWS Shield Standard (free, auto with CloudFront)
 
 ## Accessibility
 
-- WCAG AA contrast verified in both themes (primary text 18:1; secondary ~7:1)
-- All interactive elements ≥44×44px
-- `prefers-reduced-motion` short-circuits every animation to instant
-- Skip-to-content link, focus rings, semantic landmarks, scroll-spy `aria-current`
-- Bilingual support honors `dir="rtl"` and `lang="ar"`
+- WCAG AA contrast verified in both themes
+- All interactive elements ≥ 44 × 44 px
+- `prefers-reduced-motion` short-circuits every animation
+- Skip-to-content link, visible focus rings, semantic landmarks, scroll-spy `aria-current`
+- `dir="rtl"` and `lang="ar"` switched at runtime; logical CSS throughout
 
 ## Browser support
 
-Modern evergreen only (Chrome / Edge 119+, Safari 17+, Firefox 121+). Uses OKLCH color, CSS logical properties, `clip-path`, `100svh`, `IntersectionObserver`, AVIF — all baseline 2024.
+Modern evergreen — Chrome/Edge 119+, Safari 17+, Firefox 121+. Uses OKLCH, CSS logical properties, `clip-path`, `100svh`, `IntersectionObserver`, `animation-timeline: view()`, AVIF. All baseline 2024.
 
 ## License
 
-Source code: MIT. Photo, resume, and personal content: all rights reserved.
+Source code, tokens, and components: **MIT**.
+Avatar photo, resume, name, and brand identity: **© Osama Mirghani — all rights reserved.**
