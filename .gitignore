@@ -55,6 +55,9 @@ coverage/
 *~
 .history/
 
+# --- Claude Code (project settings + skills are tracked; local overrides are not) ---
+.claude/settings.local.json
+
 # --- OS metadata ---
 .DS_Store
 .DS_Store?

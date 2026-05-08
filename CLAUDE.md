@@ -9,6 +9,11 @@ CloudFront via GitHub Actions OIDC. Bilingual EN / AR with full RTL.
 source of truth for visual decisions. Walk through its checklist before
 creating any component.
 
+The project ships a Claude Code skill — **[`om-ds-ui`](.claude/skills/om-ds-ui/SKILL.md)**
+— that automatically activates on UI-related requests ("add a section",
+"create a component", "redesign", `/om-ds`, etc.) and walks the agent
+through the design system. Trust it over memory or training.
+
 | File | Use |
 | --- | --- |
 | [`docs/design-system/README.md`](docs/design-system/README.md) | Visual foundations, hard rules, the "when you add a component" checklist |
