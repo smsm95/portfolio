@@ -912,3 +912,77 @@ main {
     transform: none;
   }
 }
+
+
+/* ===== Print stylesheet — turn the page into a tidy 1-page handout ===== */
+@media print {
+  /* Strip layout chrome that doesn't translate to paper */
+  header, .skip-link, .social-rail, .clients-band, .nf-grid, .nf-dot {
+    display: none !important;
+  }
+
+  /* Force light mode regardless of OS theme; ink-on-paper */
+  html, body, .dark {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  /* Cancel every animation, mask, transform, shadow */
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+    -webkit-mask-image: none !important;
+            mask-image: none !important;
+    color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  main {
+    padding: 0 !important;
+  }
+
+  /* Section spacing tightened for paper density */
+  .editorial-section {
+    padding-block: 1.5rem !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Hero stage — avatar at a sensible print size */
+  .hero-stage {
+    width: 4.5cm !important;
+    margin-block: 0.5cm !important;
+  }
+
+  /* Show the URL of every external link after its text */
+  a[href^='http']:after,
+  a[href^='mailto:']:after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+    color: #555;
+    word-break: break-all;
+  }
+  /* Don't decorate internal anchors */
+  a[href^='#']:after,
+  a[href^='/']:after {
+    content: '';
+  }
+
+  /* Project rows tighter, no hover treatments */
+  .project-row {
+    padding: 0.7rem 0 !important;
+  }
+  .project-row::before {
+    display: none !important;
+  }
+
+  /* Footer keeps its colophon */
+  footer {
+    border-top: 1px solid #ccc !important;
+    padding: 0.5rem 0 !important;
+    margin-top: 1rem !important;
+  }
+}
