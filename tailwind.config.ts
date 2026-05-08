@@ -33,6 +33,13 @@ const config: Config = {
           soft: 'var(--accent-soft)',
           hover: 'var(--accent-hover)',
         },
+        spectrum: {
+          emerald: 'var(--spectrum-emerald)',
+          cobalt: 'var(--spectrum-cobalt)',
+          citrus: 'var(--spectrum-citrus)',
+          magenta: 'var(--spectrum-magenta)',
+          violet: 'var(--spectrum-violet)',
+        },
       },
       fontFamily: {
         sans: [
@@ -43,11 +50,22 @@ const config: Config = {
           'sans-serif',
         ],
         arabic: ['var(--font-arabic)', 'sans-serif'],
+        mono: [
+          'var(--font-mono)',
+          'ui-monospace',
+          'SFMono-Regular',
+          'Menlo',
+          'monospace',
+        ],
+        serif: ['var(--font-serif)', 'ui-serif', 'Georgia', 'serif'],
       },
       boxShadow: {
         1: 'var(--shadow-1)',
         2: 'var(--shadow-2)',
         3: 'var(--shadow-3)',
+        4: 'var(--shadow-4)',
+        emerald: 'var(--shadow-emerald)',
+        cobalt: 'var(--shadow-cobalt)',
       },
     },
   },

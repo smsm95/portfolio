@@ -1,6 +1,7 @@
 'use client';
 
 import Reveal from './Reveal';
+import { SectionHeading } from './SectionHeading';
 import { social } from '@/lib/data';
 import { useLocale } from '@/lib/i18n';
 
@@ -19,9 +20,12 @@ export default function Contact() {
             <span className="text-xs uppercase tracking-[0.18em] text-ink-muted numeral">
               {t.contact.sectionLabel}
             </span>
-            <h2 id="contact-title" className="display-3 text-ink-primary mt-4">
+            <SectionHeading
+              id="contact-title"
+              className="display-3 text-ink-primary mt-4"
+            >
               {t.contact.sectionHeading}
-            </h2>
+            </SectionHeading>
           </div>
         </Reveal>
 

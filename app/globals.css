@@ -34,6 +34,13 @@
   --bg-inverse: oklch(0.18 0.012 250);
   --bg-nav: oklch(0.985 0.005 80 / 0.9);
 
+  /* Spectrum surface tints — match a Spectrum hue, used as soft chip backgrounds */
+  --bg-tint-emerald: oklch(0.96 0.04 162);
+  --bg-tint-cobalt:  oklch(0.96 0.04 250);
+  --bg-tint-citrus:  oklch(0.96 0.06  95);
+  --bg-tint-magenta: oklch(0.96 0.04 350);
+  --bg-tint-violet:  oklch(0.96 0.04 290);
+
   /* Borders */
   --border-subtle: oklch(0.18 0.012 250 / 0.08);
   --border-default: oklch(0.18 0.012 250 / 0.16);
@@ -45,15 +52,39 @@
   --ink-muted: oklch(0.58 0.008 250);
   --ink-inverse: oklch(0.985 0.005 80);
 
-  /* Accent (emerald) */
-  --accent: oklch(0.50 0.13 165);
+  /* Spectrum — 5-stop accent palette; emerald is the default semantic accent */
+  --spectrum-emerald: oklch(0.62 0.16 162);
+  --spectrum-cobalt:  oklch(0.55 0.18 250);
+  --spectrum-citrus:  oklch(0.85 0.18  95);
+  --spectrum-magenta: oklch(0.62 0.22 350);
+  --spectrum-violet:  oklch(0.55 0.22 290);
+
+  /* Tag-chip ink tones — darker than the Spectrum stop, readable on -tint backgrounds */
+  --spectrum-emerald-ink: oklch(0.32 0.10 162);
+  --spectrum-cobalt-ink:  oklch(0.32 0.10 250);
+  --spectrum-citrus-ink:  oklch(0.36 0.12  95);
+  --spectrum-magenta-ink: oklch(0.32 0.12 350);
+  --spectrum-violet-ink:  oklch(0.32 0.12 290);
+
+  /* Accent (emerald = primary semantic) */
+  --accent: var(--spectrum-emerald);
   --accent-soft: oklch(0.93 0.04 165);
-  --accent-hover: oklch(0.45 0.13 165);
+  --accent-hover: oklch(0.55 0.16 162);
+
+  /* Motion easings */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-overshoot: cubic-bezier(0.68, -0.55, 0.27, 1.55);
 
   /* Shadow scale */
   --shadow-1: 0 1px 2px oklch(0.18 0.012 250 / 0.05);
   --shadow-2: 0 4px 12px oklch(0.18 0.012 250 / 0.06);
   --shadow-3: 0 12px 32px oklch(0.18 0.012 250 / 0.08);
+  --shadow-4: 0 24px 60px oklch(0.18 0.012 250 / 0.12);
+  --shadow-emerald: 0 12px 32px oklch(0.62 0.16 162 / 0.25);
+  --shadow-cobalt:  0 12px 32px oklch(0.55 0.18 250 / 0.25);
 
   color-scheme: light;
 }
@@ -65,6 +96,12 @@
   --bg-inverse: oklch(0.985 0.005 80);
   --bg-nav: oklch(0.18 0.008 250 / 0.85);
 
+  --bg-tint-emerald: oklch(0.28 0.06 162);
+  --bg-tint-cobalt:  oklch(0.28 0.07 250);
+  --bg-tint-citrus:  oklch(0.32 0.10  95);
+  --bg-tint-magenta: oklch(0.28 0.08 350);
+  --bg-tint-violet:  oklch(0.28 0.08 290);
+
   --border-subtle: oklch(0.985 0.005 80 / 0.06);
   --border-default: oklch(0.985 0.005 80 / 0.12);
   --border-strong: oklch(0.985 0.005 80 / 0.24);
@@ -74,13 +111,28 @@
   --ink-muted: oklch(0.55 0.008 250);
   --ink-inverse: oklch(0.18 0.012 250);
 
-  --accent: oklch(0.74 0.14 165);
-  --accent-soft: oklch(0.32 0.08 165);
-  --accent-hover: oklch(0.80 0.14 165);
+  --spectrum-emerald: oklch(0.74 0.14 162);
+  --spectrum-cobalt:  oklch(0.72 0.16 250);
+  --spectrum-citrus:  oklch(0.88 0.18  95);
+  --spectrum-magenta: oklch(0.72 0.20 350);
+  --spectrum-violet:  oklch(0.70 0.20 290);
+
+  --spectrum-emerald-ink: oklch(0.95 0.04 162);
+  --spectrum-cobalt-ink:  oklch(0.95 0.04 250);
+  --spectrum-citrus-ink:  oklch(0.97 0.05  95);
+  --spectrum-magenta-ink: oklch(0.95 0.04 350);
+  --spectrum-violet-ink:  oklch(0.95 0.04 290);
+
+  --accent: var(--spectrum-emerald);
+  --accent-soft: oklch(0.32 0.08 162);
+  --accent-hover: oklch(0.80 0.14 162);
 
   --shadow-1: 0 1px 2px oklch(0.05 0 0 / 0.4);
   --shadow-2: 0 4px 12px oklch(0.05 0 0 / 0.5);
   --shadow-3: 0 12px 32px oklch(0.05 0 0 / 0.6);
+  --shadow-4: 0 24px 60px oklch(0.05 0 0 / 0.75);
+  --shadow-emerald: 0 12px 32px oklch(0.74 0.14 162 / 0.30);
+  --shadow-cobalt:  0 12px 32px oklch(0.72 0.16 250 / 0.30);
 
   color-scheme: dark;
 }
@@ -292,10 +344,29 @@ main {
   padding-block: clamp(5rem, 10vw, 9rem);
 }
 
-/* Number tag (for project numbering) */
+/* Mono voice — section labels, numerals, tag chips. JetBrains Mono. */
 .numeral {
+  font-family: var(--font-mono), ui-monospace, Menlo, monospace;
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum';
+}
+
+/* Single-word italic flourish inside otherwise-sans display headings.
+ * Latin only — Arabic uses no italic; the marker degrades gracefully. */
+.serif-italic {
+  font-family: var(--font-serif), ui-serif, Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
+[lang='ar'] .serif-italic {
+  font-family: var(--font-arabic), sans-serif;
+  font-style: normal;
+}
+
+/* Accent period at the end of section headings */
+.accent-period {
+  color: var(--accent);
 }
 
 /* ===== Entrance choreography ===== */
@@ -492,6 +563,317 @@ main {
   letter-spacing: 0.06em;
 }
 
+/* ===== Section heading: animated highlight bar (Tier C) ===== */
+.section-heading {
+  position: relative;
+  display: inline-block;
+}
+.section-heading::before {
+  content: '';
+  position: absolute;
+  inset-inline: -8px;
+  bottom: -2px;
+  height: 8px;
+  background: var(--accent);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: opacity var(--d-base) var(--ease-out-quart),
+              transform var(--d-slow) var(--ease-out-expo);
+  border-radius: 4px;
+  z-index: -1;
+}
+.reveal-in .section-heading::before {
+  opacity: 0.18;
+  transform: scaleX(1);
+}
+[dir='rtl'] .section-heading::before {
+  transform-origin: right;
+}
+
+/* ===== Hero motion (Tier D) ===== */
+/* Photo float — gentle 6s vertical drift (compounds with entrance-photo via wrapper) */
+.hero-photo {
+  animation: photo-float 6s ease-in-out 1100ms infinite;
+}
+@keyframes photo-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+/* Hero stage glow rings — two pulsing rings from the avatar circle */
+.hero-stage::before,
+.hero-stage::after {
+  content: '';
+  position: absolute;
+  inset: -8%;
+  border-radius: 50%;
+  border: 1px solid var(--border-default);
+  opacity: 0;
+  pointer-events: none;
+  animation: hero-ring 4s var(--ease-out-expo) 1100ms infinite;
+}
+.hero-stage::after {
+  animation-delay: 3100ms; /* 1100ms entrance + 2000ms ring stagger */
+}
+@keyframes hero-ring {
+  0%   { opacity: 0;    transform: scale(0.9); }
+  30%  { opacity: 0.5; }
+  100% { opacity: 0;    transform: scale(1.3); }
+}
+
+/* ===== Navbar CV polish (Tier F) ===== */
+/* Diagonal shine sweep on hover */
+.cv-button {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.cv-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    oklch(1 0 0 / 0.18) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: transform 600ms var(--ease-out-expo);
+}
+.cv-button:hover::after {
+  transform: translateX(100%);
+}
+[dir='rtl'] .cv-button::after {
+  transform: translateX(100%);
+}
+[dir='rtl'] .cv-button:hover::after {
+  transform: translateX(-100%);
+}
+.cv-button-chip {
+  transition: transform var(--d-base) var(--ease-spring), background var(--d-base);
+}
+.cv-button:hover .cv-button-chip {
+  transform: rotate(-90deg) scale(1.08);
+}
+[dir='rtl'] .cv-button:hover .cv-button-chip {
+  transform: rotate(90deg) scale(1.08);
+}
+
+/* ===== Project rows: Spectrum tinting + hover top bar + title slide (Tier B) ===== */
+.project-row {
+  position: relative;
+  transition: background var(--d-base);
+}
+.project-row::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--d-slow) var(--ease-out-expo);
+}
+[dir='rtl'] .project-row::before {
+  transform-origin: right;
+}
+.project-row:hover::before {
+  transform: scaleX(1);
+}
+.project-title {
+  transition: transform var(--d-base) var(--ease-out-quart);
+}
+.project-row:hover .project-title {
+  transform: translateX(4px);
+}
+[dir='rtl'] .project-row:hover .project-title {
+  transform: translateX(-4px);
+}
+
+/* Spectrum tones — applied per-row via .tone-{name} */
+.tone-emerald { --tone: var(--spectrum-emerald); --tone-tint: var(--bg-tint-emerald); --tone-ink: var(--spectrum-emerald-ink); }
+.tone-cobalt  { --tone: var(--spectrum-cobalt);  --tone-tint: var(--bg-tint-cobalt);  --tone-ink: var(--spectrum-cobalt-ink); }
+.tone-citrus  { --tone: var(--spectrum-citrus);  --tone-tint: var(--bg-tint-citrus);  --tone-ink: var(--spectrum-citrus-ink); }
+.tone-magenta { --tone: var(--spectrum-magenta); --tone-tint: var(--bg-tint-magenta); --tone-ink: var(--spectrum-magenta-ink); }
+.tone-violet  { --tone: var(--spectrum-violet);  --tone-tint: var(--bg-tint-violet);  --tone-ink: var(--spectrum-violet-ink); }
+
+.project-row.tone-emerald::before,
+.project-row.tone-cobalt::before,
+.project-row.tone-citrus::before,
+.project-row.tone-magenta::before,
+.project-row.tone-violet::before {
+  background: var(--tone);
+}
+
+.project-row .project-num {
+  color: var(--tone, var(--ink-muted));
+}
+
+/* Tag chips — mono font, soft tint background, spring lift on hover */
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: var(--tone-tint, var(--bg-elevated));
+  color: var(--tone-ink, var(--ink-secondary));
+  transition: transform var(--d-base) var(--ease-spring);
+  white-space: nowrap;
+}
+.tag-chip:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* ===== 404 — Lost in transit ===== */
+.nf-stage {
+  position: relative;
+  max-width: 640px;
+  text-align: center;
+  margin-inline: auto;
+}
+.nf-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.5;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+}
+.nf-num {
+  font-size: clamp(8rem, 28vw, 18rem);
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+  font-weight: 700;
+  margin: 0;
+  display: inline-block;
+  position: relative;
+}
+.nf-d4-1, .nf-d0, .nf-d4-2 {
+  display: inline-block;
+  animation: nf-rise 720ms var(--ease-out-expo) both;
+}
+.nf-d4-1 { color: var(--spectrum-emerald); animation-delay: 100ms; }
+.nf-d0   { color: var(--spectrum-magenta); animation-delay: 200ms; animation-name: nf-rise-spin; position: relative; }
+.nf-d4-2 { color: var(--spectrum-cobalt);  animation-delay: 300ms; }
+.nf-d0::before {
+  content: '';
+  position: absolute;
+  inset: 18%;
+  border: 4px dashed var(--spectrum-citrus);
+  border-radius: 50%;
+  animation: nf-spin 8s linear infinite;
+}
+@keyframes nf-spin     { to { transform: rotate(360deg); } }
+@keyframes nf-rise     { from { opacity: 0; transform: translateY(20px); }                  to { opacity: 1; transform: translateY(0); } }
+@keyframes nf-rise-spin{ from { opacity: 0; transform: translateY(20px) rotate(-90deg); }   to { opacity: 1; transform: translateY(0) rotate(0); } }
+
+.nf-h {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+  margin: 16px 0 0;
+  animation: nf-rise 600ms var(--ease-out-expo) 400ms both;
+  color: var(--ink-primary);
+}
+.nf-h .serif-italic {
+  color: var(--spectrum-violet);
+}
+.nf-body {
+  color: var(--ink-secondary);
+  font-size: 17px;
+  line-height: 1.6;
+  margin: 16px auto 0;
+  max-width: 36rem;
+  animation: nf-rise 600ms var(--ease-out-expo) 500ms both;
+}
+.nf-code {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 14px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--bg-tint-emerald);
+  color: var(--spectrum-emerald-ink);
+}
+.nf-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+  animation: nf-rise 600ms var(--ease-out-expo) 600ms both;
+}
+.nf-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding-inline-start: 22px;
+  padding-inline-end: 6px;
+  border-radius: 9999px;
+  background: var(--ink-primary);
+  color: var(--ink-inverse);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: transform 200ms var(--ease-out-quart);
+}
+.nf-btn-primary:hover { transform: translateY(-2px) scale(1.02); }
+.nf-btn-primary .nf-chip {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  background: var(--accent);
+  color: var(--ink-primary);
+  font-size: 14px;
+  transition: transform var(--d-base) var(--ease-spring);
+}
+.nf-btn-primary:hover .nf-chip { transform: rotate(-45deg); }
+[dir='rtl'] .nf-btn-primary:hover .nf-chip { transform: rotate(45deg); }
+.nf-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 9999px;
+  border: 1px solid var(--border-default);
+  background: transparent;
+  color: var(--ink-primary);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 200ms, color 200ms;
+}
+.nf-btn-secondary:hover {
+  border-color: var(--spectrum-magenta);
+  color: var(--spectrum-magenta);
+}
+
+/* Floating Spectrum dots */
+.nf-dot {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: nf-bob 5s ease-in-out infinite;
+}
+.nf-dot.d1 { width: 14px; height: 14px; background: var(--spectrum-emerald); inset-inline-start: -40px; top: 30px;  animation-delay: 0s; }
+.nf-dot.d2 { width: 22px; height: 22px; background: var(--spectrum-cobalt);  inset-inline-end:   -50px; top: 80px;  animation-delay: 1s; }
+.nf-dot.d3 { width: 10px; height: 10px; background: var(--spectrum-citrus);  inset-inline-start:  20%;  bottom: -30px; animation-delay: 2s; }
+.nf-dot.d4 { width: 18px; height: 18px; background: var(--spectrum-violet);  inset-inline-end:    15%; bottom: 10px;  animation-delay: 1.5s; }
+@keyframes nf-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+
 /* Reduced motion: short-circuit everything to instant */
 @media (prefers-reduced-motion: reduce) {
   .reveal {
@@ -510,5 +892,23 @@ main {
     opacity: 1;
     transform: none;
     clip-path: none;
+  }
+  .hero-photo,
+  .hero-stage::before,
+  .hero-stage::after {
+    animation: none;
+  }
+  .section-heading::before {
+    transition: none;
+  }
+  .cv-button::after {
+    display: none;
+  }
+  .nf-d4-1, .nf-d0, .nf-d4-2,
+  .nf-h, .nf-body, .nf-actions,
+  .nf-d0::before, .nf-dot {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 }
