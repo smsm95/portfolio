@@ -46,6 +46,14 @@ export type Translation = {
       Practice: string;
     };
   };
+  certifications: {
+    sectionLabel: string;
+    sectionHeading: string;
+    intro: string;
+    issuedPrefix: string;
+    verifyAria: (name: string) => string;
+    items: Record<string, { name: string; issuer: string }>;
+  };
   projects: {
     sectionLabel: string;
     sectionHeading: string;
@@ -130,8 +138,38 @@ const en: Translation = {
       Practice: 'Practice',
     },
   },
+  certifications: {
+    sectionLabel: '03 / Credentials',
+    sectionHeading: 'Verified, *current*.',
+    intro:
+      'Five active certifications covering AWS architecture and operations, plus product and delivery on the Scrum side. All public on Credly, all in date.',
+    issuedPrefix: 'Issued',
+    verifyAria: (name) => `Verify ${name} on Credly`,
+    items: {
+      'aws-certified-sysops-administrator-associate': {
+        name: 'AWS Certified SysOps Administrator – Associate',
+        issuer: 'Amazon Web Services',
+      },
+      'aws-certified-developer-associate': {
+        name: 'AWS Certified Developer – Associate',
+        issuer: 'Amazon Web Services',
+      },
+      'aws-certified-solutions-architect-associate': {
+        name: 'AWS Certified Solutions Architect – Associate',
+        issuer: 'Amazon Web Services',
+      },
+      'professional-scrum-master-i-psm-i': {
+        name: 'Professional Scrum Master I',
+        issuer: 'Scrum.org',
+      },
+      'professional-scrum-product-owner-i-pspo-i': {
+        name: 'Professional Scrum Product Owner I',
+        issuer: 'Scrum.org',
+      },
+    },
+  },
   projects: {
-    sectionLabel: '03 / Selected work',
+    sectionLabel: '04 / Selected work',
     sectionHeading: 'Things I’ve *shipped*.',
     intro:
       'A short list. Most of my recent work is internal banking, so what ships publicly is the older social-impact work, still running.',
@@ -150,7 +188,7 @@ const en: Translation = {
     ],
   },
   contact: {
-    sectionLabel: '04 / Contact',
+    sectionLabel: '05 / Contact',
     sectionHeading: 'Open to freelance projects. Always up for a conversation.',
     leadBefore: 'The fastest way to reach me is ',
     leadLink: 'by email',
@@ -225,8 +263,38 @@ const ar: Translation = {
       Practice: 'الممارسات',
     },
   },
+  certifications: {
+    sectionLabel: '٠٣ / الشهادات',
+    sectionHeading: 'موثّقة، *سارية*.',
+    intro:
+      'خمس شهادات نشطة تغطّي بنية وتشغيل خدمات AWS، إلى جانب إدارة المنتج والتسليم عبر إطار سكروم. جميعها متاحة للتحقق على Credly، وكلها سارية.',
+    issuedPrefix: 'صدرت',
+    verifyAria: (name) => `تحقّق من ${name} على Credly`,
+    items: {
+      'aws-certified-sysops-administrator-associate': {
+        name: 'مسؤول عمليات نظم AWS المعتمد – المستوى التأسيسي',
+        issuer: 'أمازون ويب سيرفيسز',
+      },
+      'aws-certified-developer-associate': {
+        name: 'مطوّر AWS المعتمد – المستوى التأسيسي',
+        issuer: 'أمازون ويب سيرفيسز',
+      },
+      'aws-certified-solutions-architect-associate': {
+        name: 'مهندس حلول AWS المعتمد – المستوى التأسيسي',
+        issuer: 'أمازون ويب سيرفيسز',
+      },
+      'professional-scrum-master-i-psm-i': {
+        name: 'سكروم ماستر محترف، المستوى الأول',
+        issuer: 'Scrum.org',
+      },
+      'professional-scrum-product-owner-i-pspo-i': {
+        name: 'مالك منتج سكروم محترف، المستوى الأول',
+        issuer: 'Scrum.org',
+      },
+    },
+  },
   projects: {
-    sectionLabel: '٠٣ / أعمال مختارة',
+    sectionLabel: '٠٤ / أعمال مختارة',
     sectionHeading: 'مشاريع أنجزتها.',
     intro:
       'قائمة قصيرة. معظم أعمالي الأخيرة داخلية في قطاع البنوك، لذا ما يُنشر علنياً هو عمل اجتماعي أقدم، لا يزال مستمراً.',
@@ -245,7 +313,7 @@ const ar: Translation = {
     ],
   },
   contact: {
-    sectionLabel: '٠٤ / التواصل',
+    sectionLabel: '٠٥ / التواصل',
     sectionHeading: 'متاح لمشاريع العمل الحر. مستعد دائماً للحديث.',
     leadBefore: 'أسرع طريقة للوصول إليّ هي ',
     leadLink: 'عبر البريد الإلكتروني',
