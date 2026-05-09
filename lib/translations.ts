@@ -140,9 +140,9 @@ const en: Translation = {
   },
   certifications: {
     sectionLabel: '03 / Credentials',
-    sectionHeading: 'Verified, *current*.',
+    sectionHeading: 'What I’ve been *certified* on.',
     intro:
-      'Five active certifications covering AWS architecture and operations, plus product and delivery on the Scrum side. All public on Credly, all in date.',
+      'The three AWS Associates cover what I touch daily: architecture, build, run. The two Scrum.org credentials are from a leadership chapter, and the habits stuck.',
     issuedPrefix: 'Issued',
     verifyAria: (name) => `Verify ${name} on Credly`,
     items: {
@@ -265,9 +265,9 @@ const ar: Translation = {
   },
   certifications: {
     sectionLabel: '٠٣ / الشهادات',
-    sectionHeading: 'موثّقة، *سارية*.',
+    sectionHeading: 'ما اعتُمدت *عليه*.',
     intro:
-      'خمس شهادات نشطة تغطّي بنية وتشغيل خدمات AWS، إلى جانب إدارة المنتج والتسليم عبر إطار سكروم. جميعها متاحة للتحقق على Credly، وكلها سارية.',
+      'شهادات AWS الثلاث تغطّي ما أعمل عليه يومياً: البنية، التطوير، التشغيل. وشهادتا Scrum.org من مرحلة قيادة فرق التسليم، وعاداتها لا تزال تعمل معي.',
     issuedPrefix: 'صدرت',
     verifyAria: (name) => `تحقّق من ${name} على Credly`,
     items: {
