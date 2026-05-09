@@ -1,3 +1,5 @@
+import certificationsManifest from './certifications.json';
+
 export type Project = {
   title: string;
   description: string;
@@ -35,3 +37,14 @@ export const social = {
 export const navHrefs = ['#home', '#about', '#projects', '#contacts'] as const;
 export type NavKey = 'home' | 'about' | 'projects' | 'contacts';
 export const navKeys: NavKey[] = ['home', 'about', 'projects', 'contacts'];
+
+export type Certification = {
+  slug: string;
+  name: string;
+  issuer: string | null;
+  year: number | null;
+  issuedAt: string | null;
+  verifyUrl: string;
+};
+
+export const certifications: Certification[] = certificationsManifest;

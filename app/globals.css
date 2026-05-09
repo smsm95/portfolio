@@ -723,6 +723,104 @@ main {
   color: var(--tone, var(--ink-muted));
 }
 
+/* ===== Certifications wall ===== */
+.cert-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  isolation: isolate;
+}
+.cert-cell:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+  border-radius: 6px;
+}
+
+.cert-badge {
+  position: relative;
+  width: clamp(5rem, 18vw, 7.5rem);
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scale: 0.94;
+  filter: drop-shadow(0 2px 6px oklch(0.18 0.012 250 / 0.06));
+  transition:
+    scale var(--d-reveal) var(--ease-out-expo) var(--d-quick),
+    transform var(--d-base) var(--ease-out-quart),
+    filter var(--d-base) var(--ease-out-quart);
+}
+.reveal-in .cert-badge {
+  scale: 1;
+}
+.cert-badge img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+.cert-cell:hover .cert-badge,
+.cert-cell:focus-visible .cert-badge {
+  transform: translateY(-4px);
+  filter: drop-shadow(
+    0 14px 28px var(--cert-glow, oklch(0.18 0.012 250 / 0.18))
+  );
+}
+
+/* Tone-tinted glow follows the badge alpha — no rectangular shadow */
+.cert-cell.tone-emerald { --cert-glow: oklch(0.62 0.16 162 / 0.50); }
+.cert-cell.tone-cobalt  { --cert-glow: oklch(0.55 0.18 250 / 0.50); }
+.cert-cell.tone-citrus  { --cert-glow: oklch(0.85 0.18  95 / 0.55); }
+.cert-cell.tone-magenta { --cert-glow: oklch(0.62 0.22 350 / 0.50); }
+.cert-cell.tone-violet  { --cert-glow: oklch(0.55 0.22 290 / 0.50); }
+
+.dark .cert-cell.tone-emerald { --cert-glow: oklch(0.74 0.14 162 / 0.55); }
+.dark .cert-cell.tone-cobalt  { --cert-glow: oklch(0.72 0.16 250 / 0.55); }
+.dark .cert-cell.tone-citrus  { --cert-glow: oklch(0.88 0.18  95 / 0.55); }
+.dark .cert-cell.tone-magenta { --cert-glow: oklch(0.72 0.20 350 / 0.55); }
+.dark .cert-cell.tone-violet  { --cert-glow: oklch(0.70 0.20 290 / 0.55); }
+
+.cert-name {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink-primary);
+  letter-spacing: -0.005em;
+  max-width: 22ch;
+  text-wrap: balance;
+}
+
+.cert-meta {
+  margin-top: 0.5rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-muted);
+  font-feature-settings: 'tnum';
+}
+.cert-sep {
+  display: inline-block;
+  margin-inline: 0.4em;
+  opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cert-badge {
+    scale: 1;
+    transition: opacity var(--d-quick) linear;
+  }
+  .cert-cell:hover .cert-badge,
+  .cert-cell:focus-visible .cert-badge {
+    transform: none;
+    filter: drop-shadow(0 4px 10px oklch(0.18 0.012 250 / 0.10));
+  }
+}
+
 /* Tag chips — mono font, soft tint background, spring lift on hover */
 .tag-chip {
   display: inline-flex;
