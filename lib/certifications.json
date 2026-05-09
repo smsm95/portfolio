@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "aws-certified-sysops-administrator-associate",
+    "name": "AWS Certified SysOps Administrator – Associate",
+    "issuer": "Amazon Web Services Training and Certification",
+    "year": 2024,
+    "issuedAt": "2024-02-05",
+    "verifyUrl": "https://www.credly.com/badges/f786d8ed-de40-427f-a167-3e29132cad6e"
+  },
+  {
+    "slug": "aws-certified-developer-associate",
+    "name": "AWS Certified Developer – Associate",
+    "issuer": "Amazon Web Services Training and Certification",
+    "year": 2024,
+    "issuedAt": "2024-01-15",
+    "verifyUrl": "https://www.credly.com/badges/74e55b36-c327-4fa3-87e9-d4ccb229caca"
+  },
+  {
+    "slug": "aws-certified-solutions-architect-associate",
+    "name": "AWS Certified Solutions Architect – Associate",
+    "issuer": "Amazon Web Services Training and Certification",
+    "year": 2023,
+    "issuedAt": "2023-12-18",
+    "verifyUrl": "https://www.credly.com/badges/e819c347-d858-4872-b325-a0a52c14e9ce"
+  },
+  {
+    "slug": "professional-scrum-master-i-psm-i",
+    "name": "Professional Scrum Master™ I (PSM I)",
+    "issuer": "Scrum.org",
+    "year": 2023,
+    "issuedAt": "2023-06-30",
+    "verifyUrl": "https://www.credly.com/badges/0610e57e-4a5f-4bb2-8273-68211439f712"
+  },
+  {
+    "slug": "professional-scrum-product-owner-i-pspo-i",
+    "name": "Professional Scrum Product Owner™ I (PSPO I)",
+    "issuer": "Scrum.org",
+    "year": 2023,
+    "issuedAt": "2023-06-27",
+    "verifyUrl": "https://www.credly.com/badges/98f5b73b-9a00-4895-bf12-aa73695fd548"
+  }
+]
