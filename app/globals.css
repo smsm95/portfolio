@@ -141,6 +141,13 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Prevent decorative animations (hero ring, glow rings) from forcing
+ * horizontal scroll on narrow viewports. `clip` is stricter than
+ * `hidden` — no scroll context, no scrollbars. */
+html, body {
+  overflow-x: clip;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
@@ -407,6 +414,9 @@ main {
 /* Hero name: per-word mask reveal (LTR: left → right wipe) */
 .entrance-word {
   display: inline-block;
+  /* Each name word is one unbreakable unit so per-letter spans inside
+   * never wrap mid-word on narrow viewports. */
+  white-space: nowrap;
   clip-path: inset(0 100% -10% 0);
   animation: entrance-word var(--d-reveal) var(--ease-out-expo) both;
   /* Inline style sets the per-word delay */
@@ -727,8 +737,10 @@ main {
   transition: transform var(--d-base) var(--ease-spring);
   white-space: nowrap;
 }
-.tag-chip:hover {
-  transform: translateY(-2px) scale(1.05);
+@media (hover: hover) {
+  .tag-chip:hover {
+    transform: translateY(-2px) scale(1.05);
+  }
 }
 
 /* ===== 404 — Lost in transit ===== */
@@ -1082,5 +1094,258 @@ main {
 @media (pointer: coarse) {
   .cursor-accent {
     display: none !important;
+  }
+}
+
+/* ===== Section label typewriter — character-by-character on reveal ===== */
+.section-label-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(2px);
+  transition: opacity 200ms var(--ease-out-quart),
+              transform 200ms var(--ease-out-quart);
+  white-space: pre;
+}
+.reveal-in .section-label-char {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Section heading word-by-word stagger ===== */
+.section-heading-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--d-base) var(--ease-out-quart),
+              transform var(--d-base) var(--ease-out-quart);
+}
+.reveal-in .section-heading-word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Hero name letter shimmer (LTR only) ===== */
+.hero-letter {
+  display: inline-block;
+  position: relative;
+  color: inherit;
+  transition: color 200ms var(--ease-out-quart);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .hero-name:hover .hero-letter {
+    animation: hero-letter-shimmer 1100ms var(--ease-out-quart) both;
+    animation-delay: var(--shimmer-delay, 0ms);
+  }
+}
+@keyframes hero-letter-shimmer {
+  0%   { color: inherit; transform: translateY(0); }
+  20%  { color: var(--spectrum-emerald); transform: translateY(-2px); }
+  40%  { color: var(--spectrum-cobalt); }
+  60%  { color: var(--spectrum-magenta); }
+  80%  { color: var(--spectrum-violet); }
+  100% { color: inherit; transform: translateY(0); }
+}
+
+/* ===== Hero photo cursor tilt (set by JS via --tilt-x / --tilt-y) ===== */
+.hero-stage {
+  perspective: 1200px;
+}
+.hero-photo {
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform 320ms var(--ease-out-quart);
+}
+
+/* ===== Tagline slash — Spectrum colour cycle (ambient) ===== */
+.tagline-slash {
+  display: inline-block;
+  color: var(--accent);
+  animation: tagline-slash-cycle 25s linear infinite;
+}
+@keyframes tagline-slash-cycle {
+  0%   { color: var(--spectrum-emerald); }
+  20%  { color: var(--spectrum-cobalt); }
+  40%  { color: var(--spectrum-citrus); }
+  60%  { color: var(--spectrum-magenta); }
+  80%  { color: var(--spectrum-violet); }
+  100% { color: var(--spectrum-emerald); }
+}
+
+/* ===== Project number 3D flip on viewport entry ===== */
+.project-row .project-num {
+  display: inline-block;
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+}
+.reveal-in .project-num {
+  animation: project-num-flip 720ms var(--ease-out-expo) both;
+}
+@keyframes project-num-flip {
+  from { transform: rotateX(-90deg); opacity: 0; }
+  60%  { opacity: 1; }
+  to   { transform: rotateX(0deg);   opacity: 1; }
+}
+
+/* ===== Tag-chip stagger on reveal-in ===== */
+.tag-chip {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--d-base) var(--ease-out-quart),
+              transform var(--d-base) var(--ease-spring);
+}
+.reveal-in .tag-chip {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (hover: hover) {
+  .reveal-in .tag-chip:hover {
+    transform: translateY(-2px) scale(1.05);
+  }
+}
+
+/* ===== Project link arrow ↗ — slow ambient bob, paused on hover ===== */
+.project-link-arrow {
+  animation: arrow-bob 3.4s ease-in-out infinite;
+}
+.project-link:hover .project-link-arrow {
+  animation: none;
+}
+@keyframes arrow-bob {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(2px, -2px); }
+}
+
+/* ===== Email Spectrum gradient sweep ===== */
+.contact-email {
+  background-image: linear-gradient(
+    90deg,
+    var(--spectrum-emerald),
+    var(--spectrum-cobalt),
+    var(--spectrum-magenta),
+    var(--spectrum-violet)
+  );
+  background-size: 0% 2px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 420ms var(--ease-out-quart);
+}
+@media (hover: hover) {
+  .contact-email:hover {
+    background-size: 100% 2px;
+  }
+}
+[dir='rtl'] .contact-email {
+  background-position: 100% 100%;
+}
+
+/* ===== Footer year typewriter ===== */
+.footer-year-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(2px);
+  transition: opacity 160ms var(--ease-out-quart),
+              transform 160ms var(--ease-out-quart);
+}
+.reveal-in .footer-year-char {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Footer separator pulse ===== */
+.footer-separator {
+  display: inline-block;
+  animation: footer-separator-pulse 3.2s ease-in-out infinite;
+}
+@keyframes footer-separator-pulse {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
+
+/* ===== Scroll progress bar (1px Spectrum, top of viewport) ===== */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  inset-inline: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--spectrum-emerald) 0%,
+    var(--spectrum-cobalt) 25%,
+    var(--spectrum-citrus) 50%,
+    var(--spectrum-magenta) 75%,
+    var(--spectrum-violet) 100%
+  );
+  transform: scaleX(0);
+  transform-origin: left;
+  z-index: 49;
+  pointer-events: none;
+  opacity: 0.85;
+}
+[dir='rtl'] .scroll-progress {
+  transform-origin: right;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: scroll-progress-fill linear both;
+    animation-timeline: scroll(root);
+  }
+  @keyframes scroll-progress-fill {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+}
+
+/* ===== Cursor accent grows over interactive elements ===== */
+.cursor-accent {
+  transition: opacity 200ms var(--ease-out-quart),
+              width 200ms var(--ease-out-quart),
+              height 200ms var(--ease-out-quart),
+              background 200ms var(--ease-out-quart);
+}
+.cursor-accent.is-interactive {
+  width: 28px;
+  height: 28px;
+  background: var(--spectrum-magenta);
+  opacity: 0.55;
+}
+
+/* ===== Triple-click monogram easter egg — Spectrum pulse ===== */
+.monogram {
+  transition: background 200ms;
+}
+.monogram-spectrum {
+  animation: monogram-spectrum 1.1s ease-in-out;
+}
+@keyframes monogram-spectrum {
+  0%   { background: var(--spectrum-emerald); }
+  20%  { background: var(--spectrum-cobalt); }
+  40%  { background: var(--spectrum-citrus); }
+  60%  { background: var(--spectrum-magenta); }
+  80%  { background: var(--spectrum-violet); }
+  100% { background: var(--ink-primary); }
+}
+
+/* ===== Reduced motion — cancel all the new animations ===== */
+@media (prefers-reduced-motion: reduce) {
+  .section-label-char,
+  .section-heading-word,
+  .footer-year-char,
+  .tag-chip {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+  .hero-letter,
+  .tagline-slash,
+  .project-num,
+  .project-link-arrow,
+  .footer-separator,
+  .monogram-spectrum {
+    animation: none !important;
+  }
+  .hero-photo {
+    transform: none !important;
+  }
+  .scroll-progress {
+    display: none;
   }
 }

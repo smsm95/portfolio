@@ -123,15 +123,23 @@ export default function Navbar() {
       }`}
     >
       <div className="mx-auto max-w-6xl px-5 sm:px-8 py-4 sm:py-5 grid grid-cols-[auto_1fr_auto] items-center gap-3">
-        {/* Logo (letter mark) */}
+        {/* Logo (letter mark) — triple-click pulses through the Spectrum */}
         <a
           href="#home"
           aria-label={t.nav.homeAria}
           className="inline-flex items-center"
+          onClick={(e) => {
+            if (e.detail === 3) {
+              const mark = e.currentTarget.querySelector('.monogram');
+              mark?.classList.remove('monogram-spectrum');
+              void (mark as HTMLElement | null)?.offsetWidth;
+              mark?.classList.add('monogram-spectrum');
+            }
+          }}
         >
           <span
             aria-hidden
-            className="grid place-items-center w-8 h-8 rounded-full bg-ink-primary text-bg-base text-sm font-bold"
+            className="monogram grid place-items-center w-8 h-8 rounded-full bg-ink-primary text-bg-base text-sm font-bold"
           >
             O
           </span>

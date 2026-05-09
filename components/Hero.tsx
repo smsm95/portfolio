@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { SiLinkedin, SiUpwork, SiGmail } from 'react-icons/si';
 import { social } from '@/lib/data';
 import { useLocale } from '@/lib/i18n';
@@ -7,7 +8,50 @@ import { useLocale } from '@/lib/i18n';
 const clients = ['Emirates NBD', 'Elliptic', 'Interface FZE', 'Xzone'];
 
 export default function Hero() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
+  const photoRef = useRef<HTMLDivElement>(null);
+
+  /* Subtle photo tilt on cursor — desktop only, off when reduced-motion. */
+  useEffect(() => {
+    const el = photoRef.current;
+    if (!el) return;
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let rafId = 0;
+    const onMove = (e: PointerEvent) => {
+      const rect = el.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = (e.clientX - cx) / rect.width;
+      const dy = (e.clientY - cy) / rect.height;
+      // Only tilt when cursor is reasonably close to the photo
+      if (Math.abs(dx) > 1.4 || Math.abs(dy) > 1.4) {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+          el.style.removeProperty('--tilt-x');
+          el.style.removeProperty('--tilt-y');
+        });
+        return;
+      }
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        el.style.setProperty('--tilt-x', `${(-dy * 4).toFixed(2)}deg`);
+        el.style.setProperty('--tilt-y', `${(dx * 4).toFixed(2)}deg`);
+      });
+    };
+    const onLeave = () => {
+      el.style.removeProperty('--tilt-x');
+      el.style.removeProperty('--tilt-y');
+    };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('pointerleave', onLeave);
+    return () => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerleave', onLeave);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, []);
 
   const socialLinks = [
     { href: social.linkedin, label: t.hero.socialLabels.linkedin, Icon: SiLinkedin },
@@ -42,7 +86,7 @@ export default function Hero() {
         </ul>
 
         {/* Photo */}
-        <div className="hero-stage entrance-photo">
+        <div className="hero-stage entrance-photo" ref={photoRef}>
           <span className="hero-ring-spinner" aria-hidden />
           <div className="hero-photo">
             <picture>
@@ -91,14 +135,26 @@ export default function Hero() {
                 style={{ animationDelay: `${360 + i * 90}ms` }}
                 aria-hidden
               >
-                {word}
+                {locale === 'ar' ? (
+                  word
+                ) : (
+                  Array.from(word).map((letter, j) => (
+                    <span
+                      key={j}
+                      className="hero-letter"
+                      style={{ ['--shimmer-delay' as string]: `${j * 60}ms` }}
+                    >
+                      {letter}
+                    </span>
+                  ))
+                )}
                 {i < t.hero.nameWords.length - 1 && <span aria-hidden> </span>}
               </span>
             ))}
           </h1>
           <p className="hero-tagline mt-2.5 entrance-tagline">
             {t.hero.taglineLeft}{' '}
-            <span className="text-accent">//</span> {t.hero.taglineRight}
+            <span className="tagline-slash">//</span> {t.hero.taglineRight}
           </p>
         </div>
       </div>

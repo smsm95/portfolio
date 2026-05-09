@@ -2,6 +2,7 @@
 
 import Reveal from './Reveal';
 import { SectionHeading } from './SectionHeading';
+import { SectionLabel } from './SectionLabel';
 import { social } from '@/lib/data';
 import { useLocale } from '@/lib/i18n';
 
@@ -17,9 +18,7 @@ export default function Contact() {
       <div className="mx-auto max-w-5xl grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-10 md:gap-16 items-end">
         <Reveal>
           <div>
-            <span className="text-xs uppercase tracking-[0.18em] text-ink-muted numeral">
-              {t.contact.sectionLabel}
-            </span>
+            <SectionLabel>{t.contact.sectionLabel}</SectionLabel>
             <SectionHeading
               id="contact-title"
               className="display-3 text-ink-primary mt-4"
@@ -35,7 +34,7 @@ export default function Contact() {
               {t.contact.leadBefore}
               <a
                 href={social.email}
-                className="text-ink-primary underline decoration-accent decoration-2 underline-offset-4 hover:decoration-[3px] transition-all"
+                className="contact-email text-ink-primary underline decoration-accent decoration-2 underline-offset-4 hover:decoration-[3px] transition-all"
               >
                 {t.contact.leadLink}
               </a>

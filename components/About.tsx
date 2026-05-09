@@ -3,6 +3,7 @@
 import { Fragment } from 'react';
 import Reveal from './Reveal';
 import { SectionHeading } from './SectionHeading';
+import { SectionLabel } from './SectionLabel';
 import { useLocale } from '@/lib/i18n';
 
 const STACK_DOMAINS: Array<keyof ReturnType<typeof keyMap>> = [
@@ -35,9 +36,7 @@ export default function About() {
       <div className="mx-auto max-w-5xl grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-10 md:gap-16">
         <Reveal>
           <div>
-            <span className="text-xs uppercase tracking-[0.18em] text-ink-muted numeral">
-              {t.about.sectionLabel}
-            </span>
+            <SectionLabel>{t.about.sectionLabel}</SectionLabel>
             <SectionHeading
               id="about-title"
               className="display-3 text-ink-primary mt-4"
@@ -69,9 +68,7 @@ export default function About() {
       <div className="mx-auto max-w-5xl mt-20 sm:mt-28 grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-10 md:gap-16">
         <Reveal>
           <div>
-            <span className="text-xs uppercase tracking-[0.18em] text-ink-muted numeral">
-              {t.about.stackLabel}
-            </span>
+            <SectionLabel>{t.about.stackLabel}</SectionLabel>
             <SectionHeading className="display-3 text-ink-primary mt-4">
               {t.about.stackHeading}
             </SectionHeading>
