@@ -6,10 +6,12 @@ import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import { SectionDivider } from '@/components/SectionDivider';
 import CursorAccent from '@/components/CursorAccent';
+import ScrollProgress from '@/components/ScrollProgress';
 
 export default function Page() {
   return (
     <main id="main" tabIndex={-1}>
+      <ScrollProgress />
       <Navbar />
       <Hero />
       <SectionDivider />

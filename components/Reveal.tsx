@@ -36,17 +36,16 @@ export default function Reveal({
       return;
     }
 
-    /* Already-visible elements should reveal on first observation. */
+    /* Re-trigger on re-entry so scrolling back up replays the reveal.
+     * No negative rootMargin — short elements at the page end (footer)
+     * need every available pixel to clear the threshold. */
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('reveal-in');
-            observer.unobserve(entry.target);
-          }
+          entry.target.classList.toggle('reveal-in', entry.isIntersecting);
         }
       },
-      { rootMargin: '0px 0px 0px 0px', threshold: 0.05 }
+      { rootMargin: '0px', threshold: 0.05 }
     );
     observer.observe(el);
     return () => observer.disconnect();

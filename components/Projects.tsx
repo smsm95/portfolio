@@ -2,6 +2,7 @@
 
 import Reveal from './Reveal';
 import { SectionHeading } from './SectionHeading';
+import { SectionLabel } from './SectionLabel';
 import { projects } from '@/lib/data';
 import { useLocale } from '@/lib/i18n';
 
@@ -25,9 +26,7 @@ export default function Projects() {
       <div className="mx-auto max-w-5xl grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-10 md:gap-16 mb-16">
         <Reveal>
           <div>
-            <span className="text-xs uppercase tracking-[0.18em] text-ink-muted numeral">
-              {t.projects.sectionLabel}
-            </span>
+            <SectionLabel>{t.projects.sectionLabel}</SectionLabel>
             <SectionHeading
               id="projects-title"
               className="display-3 text-ink-primary mt-4"
@@ -85,8 +84,12 @@ export default function Projects() {
                   </p>
 
                   <ul className="mt-5 flex flex-wrap gap-1.5">
-                    {project.tags.map((tag) => (
-                      <li key={tag} className="tag-chip">
+                    {project.tags.map((tag, idx) => (
+                      <li
+                        key={tag}
+                        className="tag-chip"
+                        style={{ transitionDelay: `${120 + idx * 50}ms` }}
+                      >
                         {tag}
                       </li>
                     ))}

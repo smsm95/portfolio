@@ -36,6 +36,11 @@ export default function CursorAccent() {
         x = targetX;
         y = targetY;
       }
+      const target = e.target as HTMLElement | null;
+      const interactive = !!target?.closest(
+        'a, button, [role="button"], summary, label, input, textarea, select'
+      );
+      el.classList.toggle('is-interactive', interactive);
     };
     const onLeave = () => {
       visible = false;
